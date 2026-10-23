@@ -1,0 +1,117 @@
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+generator client {
+  provider = "prisma-client-js"
+}
+
+enum Role {
+  CANDIDATE
+  COMPANY_OWNER
+  RECRUITER
+  HIRING_MANAGER
+  ADS_MANAGER
+  PLATFORM_ADMIN
+}
+
+model User {
+  id              String            @id @default(uuid())
+  email           String            @unique
+  passwordHash    String?
+  role            Role              @default(CANDIDATE)
+  isEmailVerified Boolean           @default(false)
+  createdAt       DateTime          @default(now())
+  updatedAt       DateTime          @updatedAt
+
+  candidateProfile CandidateProfile?
+  companyProfile   CompanyProfile?
+  sessions         Session[]
+  oauthAccounts    OAuthAccount[]
+
+  @@map("users")
+}
+
+model CandidateProfile {
+  id                String   @id @default(uuid())
+  userId            String   @unique
+  user              User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  fullName          String
+  headline          String?
+  bio               String?  @db.Text
+  skills            String[] @default([])
+  location          String?
+  expectedSalaryMin Int?
+  expectedSalaryMax Int?
+  salaryCurrency    String?  @default("USD")
+  jobTypePreference String?
+  avatarUrl         String?
+  resumeUrl         String?
+  createdAt         DateTime @default(now())
+  updatedAt         DateTime @updatedAt
+
+  @@map("profiles_candidate")
+}
+
+model CompanyProfile {
+  id          String   @id @default(uuid())
+  userId      String   @unique
+  user        User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  name        String
+  website     String?
+  industry    String?
+  size        String?
+  description String?  @db.Text
+  logoUrl     String?
+  location    String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("profiles_company")
+}
+
+model RoleDefinition {
+  id          String   @id @default(uuid())
+  name        Role     @unique
+  description String?
+  permissions String[] @default([])
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  @@map("roles")
+}
+
+model Session {
+  id               String   @id @default(uuid())
+  userId           String
+  user             User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+  refreshTokenHash String
+  userAgent        String?
+  ipAddress        String?
+  expiresAt        DateTime
+  isRevoked        Boolean  @default(false)
+  createdAt        DateTime @default(now())
+  updatedAt        DateTime @updatedAt
+
+  @@index([userId])
+  @@index([refreshTokenHash])
+  @@map("sessions")
+}
+
+model OAuthAccount {
+  id             String    @id @default(uuid())
+  userId         String
+  user           User      @relation(fields: [userId], references: [id], onDelete: Cascade)
+  provider       String
+  providerUserId String
+  accessToken    String?   @db.Text
+  refreshToken   String?   @db.Text
+  expiresAt      DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@unique([provider, providerUserId])
+  @@index([userId])
+  @@map("oauth_accounts")
+}

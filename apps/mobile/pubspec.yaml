@@ -1,0 +1,51 @@
+name: mobile
+description: "Match My Jobs - AI-Powered Job Matching Mobile Platform"
+publish_to: 'none'
+
+version: 1.0.0+1
+
+environment:
+  sdk: ^3.13.5
+
+dependencies:
+  flutter:
+    sdk: flutter
+  cupertino_icons: ^2.0.0
+
+  # HTTP & Networking
+  dio: ^5.8.0+1
+
+  # Secure Storage & Persistence
+  flutter_secure_storage: ^11.2.0
+  shared_preferences: ^2.5.2
+
+  # Navigation & Routing
+  go_router: ^18.1.1
+
+  # State Management
+  flutter_riverpod: ^3.4.3
+
+  # Authentication
+  google_sign_in: ^6.3.0
+  flutter_web_auth_2: ^5.1.0
+
+  # Media & Images
+  image_picker: ^1.1.2
+  cached_network_image: ^4.0.5
+
+  # Forms & Validation
+  flutter_form_builder: ^11.0.0
+  form_builder_validators: ^11.1.1
+  intl: ^0.20.3
+
+  # UI & Styling
+  shimmer: ^4.0.0
+  google_fonts: ^6.3.3
+
+dev_dependencies:
+  flutter_test:
+    sdk: flutter
+  flutter_lints: ^6.0.0
+
+flutter:
+  uses-material-design: true
