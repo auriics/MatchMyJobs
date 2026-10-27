@@ -5,6 +5,7 @@ import { z } from 'zod';
 import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../stores/authStore';
 import { apiClient } from '../lib/axios';
+import { UserRole } from '@antigravite/types';
 import { Input } from '../components/common/Input';
 import { Button } from '../components/common/Button';
 import { SocialAuthButtons } from '../components/common/SocialAuthButtons';
@@ -23,7 +24,7 @@ export const LoginPage: React.FC = () => {
   const navigate = useNavigate();
   const location = useLocation();
 
-  const from = (location.state as any)?.from?.pathname || '/dashboard';
+  const from = (location.state as any)?.from?.pathname;
 
   const {
     register,
@@ -44,10 +45,26 @@ export const LoginPage: React.FC = () => {
       const authData = res.data.data;
       setAuth(authData);
 
-      if (!authData.hasProfile) {
+      if (!authData.hasProfile && authData.user.role === UserRole.CANDIDATE) {
         navigate('/onboarding');
+        return;
+      }
+
+      if (from && from !== '/login') {
+        navigate(from);
+        return;
+      }
+
+      // Smart role-based dashboard redirection
+      if (
+        authData.user.role === UserRole.PLATFORM_ADMIN ||
+        authData.user.role === UserRole.ADMIN_MANAGER
+      ) {
+        navigate('/platform-admin/dashboard');
+      } else if (authData.user.role === UserRole.CANDIDATE) {
+        navigate('/candidate/dashboard');
       } else {
-        navigate(from === '/login' ? '/dashboard' : from);
+        navigate('/company/dashboard');
       }
     } catch (err: any) {
       setServerError(
@@ -67,10 +84,10 @@ export const LoginPage: React.FC = () => {
             <span>Welcome Back</span>
           </div>
           <h1 className="text-3xl font-extrabold text-[#062224] tracking-tight">
-            Sign In to AntiGravite
+            Sign In to MatchMyJobs
           </h1>
           <p className="mt-2 text-sm text-gray-500">
-            Access your AI-powered job matching dashboard
+            Access your Candidate or Company recruitment dashboard
           </p>
         </div>
 

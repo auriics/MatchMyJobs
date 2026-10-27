@@ -40,10 +40,23 @@ class _SplashScreenState extends ConsumerState<SplashScreen>
   }
 
   void _checkInitialAuth() {
-    _splashTimer = Timer(const Duration(milliseconds: 1800), () {
+    _splashTimer = Timer(const Duration(milliseconds: 1500), () async {
       if (!mounted) return;
 
-      final authState = ref.read(authStateProvider);
+      var authState = ref.read(authStateProvider);
+      // Wait briefly if auth status is still resolving
+      if (authState.status == AuthStatus.initial || authState.status == AuthStatus.loading) {
+        for (int i = 0; i < 15; i++) {
+          await Future.delayed(const Duration(milliseconds: 200));
+          if (!mounted) return;
+          authState = ref.read(authStateProvider);
+          if (authState.status != AuthStatus.initial && authState.status != AuthStatus.loading) {
+            break;
+          }
+        }
+      }
+
+      if (!mounted) return;
 
       if (authState.status == AuthStatus.authenticated) {
         if (authState.hasProfile) {

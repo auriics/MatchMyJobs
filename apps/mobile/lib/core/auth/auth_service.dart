@@ -29,6 +29,7 @@ class AuthService {
     required String email,
     required String password,
     required UserRole role,
+    String? companyName,
   }) async {
     final response = await _apiClient.dio.post(
       '/auth/register',
@@ -36,6 +37,8 @@ class AuthService {
         'email': email.trim(),
         'password': password,
         'role': role.toApiString(),
+        if (companyName != null && companyName.trim().isNotEmpty)
+          'companyName': companyName.trim(),
       },
     );
 

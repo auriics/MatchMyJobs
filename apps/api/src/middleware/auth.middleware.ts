@@ -9,7 +9,10 @@ export interface AuthUserPayload {
   id: string;
   email: string;
   role: Role;
+  status: string;
   isEmailVerified: boolean;
+  organizationId?: string | null;
+  adminPermissions: string[];
 }
 
 declare global {
@@ -46,17 +49,22 @@ export async function authenticateJwt(
       return;
     }
 
-    // Optional check in cache for quick lookup
+    // Look up in cache for quick lookup
     const cacheKey = `user:${payload.userId}`;
     const cachedUser = await redisClient.get(cacheKey);
 
     if (cachedUser) {
       try {
-        req.user = JSON.parse(cachedUser);
+        const parsed = JSON.parse(cachedUser) as AuthUserPayload;
+        if (parsed.status === 'SUSPENDED' || parsed.status === 'DEACTIVATED') {
+          sendError(res, 'Your account has been suspended or deactivated. Contact support.', 403, 'ACCOUNT_SUSPENDED');
+          return;
+        }
+        req.user = parsed;
         next();
         return;
       } catch {
-        // Fall back to database
+        // Fall back to database query
       }
     }
 
@@ -67,7 +75,16 @@ export async function authenticateJwt(
         id: true,
         email: true,
         role: true,
+        status: true,
         isEmailVerified: true,
+        organizationId: true,
+        adminPermissions: true,
+        organization: {
+          select: {
+            id: true,
+            status: true,
+          },
+        },
       },
     });
 
@@ -76,15 +93,34 @@ export async function authenticateJwt(
       return;
     }
 
+    if (user.status === 'SUSPENDED' || user.status === 'DEACTIVATED') {
+      sendError(res, 'Your account has been suspended or deactivated. Contact platform administration.', 403, 'ACCOUNT_SUSPENDED');
+      return;
+    }
+
+    // Check organization status if user is in a company
+    if (
+      user.organization &&
+      user.organization.status === 'SUSPENDED' &&
+      user.role !== Role.PLATFORM_ADMIN &&
+      user.role !== Role.ADMIN_MANAGER
+    ) {
+      sendError(res, 'Your organization has been suspended. Please contact platform administration.', 403, 'ORGANIZATION_SUSPENDED');
+      return;
+    }
+
     const userPayload: AuthUserPayload = {
       id: user.id,
       email: user.email,
       role: user.role,
+      status: user.status,
       isEmailVerified: user.isEmailVerified,
+      organizationId: user.organizationId,
+      adminPermissions: user.adminPermissions || [],
     };
 
-    // Cache user payload for 5 minutes
-    await redisClient.set(cacheKey, JSON.stringify(userPayload), 'EX', 300);
+    // Cache user payload for 3 minutes
+    await redisClient.set(cacheKey, JSON.stringify(userPayload), 'EX', 180);
 
     req.user = userPayload;
     next();

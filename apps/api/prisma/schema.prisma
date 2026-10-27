@@ -13,6 +13,7 @@ enum Role {
   RECRUITER
   HIRING_MANAGER
   ADS_MANAGER
+  ADMIN_MANAGER
   PLATFORM_ADMIN
 }
 
@@ -21,16 +22,222 @@ model User {
   email           String            @unique
   passwordHash    String?
   role            Role              @default(CANDIDATE)
+  status          String            @default("ACTIVE") // ACTIVE, SUSPENDED, DEACTIVATED
   isEmailVerified Boolean           @default(false)
+  mfaEnabled      Boolean           @default(false)
+  mfaSecret       String?
+  
+  // Organization tenancy for company users
+  organizationId  String?
+  organization    Company?          @relation("CompanyEmployees", fields: [organizationId], references: [id], onDelete: SetNull)
+
+  // Explicit granular permissions for ADMIN_MANAGER
+  adminPermissions String[]         @default([])
+
   createdAt       DateTime          @default(now())
   updatedAt       DateTime          @updatedAt
 
+  // Profiles and relations
   candidateProfile CandidateProfile?
   companyProfile   CompanyProfile?
   sessions         Session[]
   oauthAccounts    OAuthAccount[]
 
+  // Recruitment and application relations
+  applications        Application[]         @relation("CandidateApplications")
+  candidateInterviews Interview[]           @relation("CandidateInterviews")
+  conductedInterviews Interview[]           @relation("InterviewerInterviews")
+  createdJobs         Job[]                 @relation("JobCreator")
+  createdCampaigns    AdvertisingCampaign[] @relation("CampaignCreator")
+  savedJobs           CandidateSavedJob[]
+  resumes             Resume[]
+  jobMatches          JobMatch[]            @relation("CandidateJobMatches")
+  auditLogs           AuditLog[]
+
+  @@index([organizationId])
+  @@index([role])
+  @@index([status])
   @@map("users")
+}
+
+model Company {
+  id          String   @id @default(uuid())
+  name        String
+  slug        String   @unique
+  website     String?
+  industry    String?
+  size        String?
+  description String?  @db.Text
+  logoUrl     String?
+  location    String?
+  status      String   @default("ACTIVE") // ACTIVE, SUSPENDED
+  ownerId     String?
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  employees   User[]                @relation("CompanyEmployees")
+  jobs        Job[]
+  campaigns   AdvertisingCampaign[]
+  invitations CompanyInvitation[]
+
+  @@map("companies")
+}
+
+model CompanyInvitation {
+  id             String   @id @default(uuid())
+  organizationId String
+  organization   Company  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  email          String
+  role           Role
+  token          String   @unique
+  status         String   @default("PENDING") // PENDING, ACCEPTED, EXPIRED, REVOKED
+  expiresAt      DateTime
+  createdAt      DateTime @default(now())
+
+  @@index([organizationId])
+  @@index([email])
+  @@map("company_invitations")
+}
+
+model Job {
+  id                      String   @id @default(uuid())
+  organizationId          String
+  organization            Company  @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById             String
+  creator                 User     @relation("JobCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  assignedHiringManagerId String?
+  
+  title                   String
+  description             String   @db.Text
+  requirements            String[] @default([])
+  department              String?
+  location                String?
+  jobType                 String   @default("FULL_TIME") // FULL_TIME, PART_TIME, CONTRACT, REMOTE, INTERNSHIP
+  workplaceType           String?  @default("remote") // remote, hybrid, onsite
+  salaryMin               Int?
+  salaryMax               Int?
+  currency                String   @default("USD")
+  status                  String   @default("PUBLISHED") // DRAFT, PUBLISHED, CLOSED, ARCHIVED
+  isPromoted              Boolean  @default(false)
+  createdAt               DateTime @default(now())
+  updatedAt               DateTime @updatedAt
+
+  applications            Application[]
+  campaigns               AdvertisingCampaign[]
+  savedBy                 CandidateSavedJob[]
+  matches                 JobMatch[]
+
+  @@index([organizationId])
+  @@index([status])
+  @@index([assignedHiringManagerId])
+  @@map("jobs")
+}
+
+model Application {
+  id           String      @id @default(uuid())
+  jobId        String
+  job          Job         @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateId  String
+  candidate    User        @relation("CandidateApplications", fields: [candidateId], references: [id], onDelete: Cascade)
+  status       String      @default("APPLIED") // APPLIED, SCREENING, SHORTLISTED, INTERVIEW_SCHEDULED, OFFERED, REJECTED, HIRED
+  resumeUrl    String?
+  coverLetter  String?     @db.Text
+  stageNotes   String?     @db.Text
+  feedback     String?     @db.Text
+  rating       Int?
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  interviews   Interview[]
+
+  @@unique([jobId, candidateId])
+  @@index([jobId])
+  @@index([candidateId])
+  @@index([status])
+  @@map("applications")
+}
+
+model Interview {
+  id              String      @id @default(uuid())
+  applicationId   String
+  application     Application @relation(fields: [applicationId], references: [id], onDelete: Cascade)
+  candidateId     String
+  candidate       User        @relation("CandidateInterviews", fields: [candidateId], references: [id], onDelete: Cascade)
+  interviewerId   String
+  interviewer     User        @relation("InterviewerInterviews", fields: [interviewerId], references: [id], onDelete: Cascade)
+  scheduledAt     DateTime
+  durationMinutes Int         @default(45)
+  meetingUrl      String?
+  status          String      @default("SCHEDULED") // SCHEDULED, COMPLETED, CANCELLED
+  feedback        String?     @db.Text
+  rating          Int?
+  recommendation  String?     // HIRE, STRONG_HIRE, NO_HIRE, HOLD
+  createdAt       DateTime    @default(now())
+  updatedAt       DateTime    @updatedAt
+
+  @@index([applicationId])
+  @@index([candidateId])
+  @@index([interviewerId])
+  @@map("interviews")
+}
+
+model AdvertisingCampaign {
+  id             String    @id @default(uuid())
+  organizationId String
+  organization   Company   @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  createdById    String
+  creator        User      @relation("CampaignCreator", fields: [createdById], references: [id], onDelete: Cascade)
+  jobId          String?
+  job            Job?      @relation(fields: [jobId], references: [id], onDelete: SetNull)
+  name           String
+  budget         Float
+  spent          Float     @default(0)
+  dailyBudget    Float
+  status         String    @default("ACTIVE") // ACTIVE, PAUSED, COMPLETED
+  impressions    Int       @default(0)
+  clicks         Int       @default(0)
+  conversions    Int       @default(0)
+  startDate      DateTime  @default(now())
+  endDate        DateTime?
+  createdAt      DateTime  @default(now())
+  updatedAt      DateTime  @updatedAt
+
+  @@index([organizationId])
+  @@index([status])
+  @@map("advertising_campaigns")
+}
+
+model CandidateSavedJob {
+  id          String   @id @default(uuid())
+  candidateId String
+  candidate   User     @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  jobId       String
+  job         Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  createdAt   DateTime @default(now())
+
+  @@unique([candidateId, jobId])
+  @@map("candidate_saved_jobs")
+}
+
+model AuditLog {
+  id         String   @id @default(uuid())
+  userId     String?
+  user       User?    @relation(fields: [userId], references: [id], onDelete: SetNull)
+  userEmail  String?
+  userRole   String?
+  action     String   // AUTH_LOGIN, ROLE_CHANGED, ACCOUNT_SUSPENDED, JOB_CREATED, APPLICATION_STATUS_UPDATED, etc.
+  resource   String   // USER, COMPANY, JOB, APPLICATION, CAMPAIGN, SYSTEM
+  resourceId String?
+  details    Json?
+  ipAddress  String?
+  userAgent  String?
+  createdAt  DateTime @default(now())
+
+  @@index([userId])
+  @@index([action])
+  @@index([resource])
+  @@index([createdAt])
+  @@map("audit_logs")
 }
 
 model CandidateProfile {
@@ -40,7 +247,12 @@ model CandidateProfile {
   fullName          String
   headline          String?
   bio               String?  @db.Text
+  phone             String?
   skills            String[] @default([])
+  experience        Json?
+  education         Json?
+  languages         String[] @default([])
+  certifications    String[] @default([])
   location          String?
   expectedSalaryMin Int?
   expectedSalaryMax Int?
@@ -48,6 +260,7 @@ model CandidateProfile {
   jobTypePreference String?
   avatarUrl         String?
   resumeUrl         String?
+  resumes           Resume[]
   createdAt         DateTime @default(now())
   updatedAt         DateTime @updatedAt
 
@@ -115,3 +328,43 @@ model OAuthAccount {
   @@index([userId])
   @@map("oauth_accounts")
 }
+
+model Resume {
+  id          String            @id @default(uuid())
+  candidateId String
+  candidate   User              @relation(fields: [candidateId], references: [id], onDelete: Cascade)
+  profileId   String?
+  profile     CandidateProfile? @relation(fields: [profileId], references: [id], onDelete: SetNull)
+  fileName    String
+  fileUrl     String
+  fileSize    Int?
+  mimeType    String?
+  rawText     String?           @db.Text
+  parsedData  Json?
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  @@index([candidateId])
+  @@map("resumes")
+}
+
+model JobMatch {
+  id            String   @id @default(uuid())
+  jobId         String
+  job           Job      @relation(fields: [jobId], references: [id], onDelete: Cascade)
+  candidateId   String
+  candidate     User     @relation("CandidateJobMatches", fields: [candidateId], references: [id], onDelete: Cascade)
+  score         Float    // 0 to 100 percentage match
+  reason        String?  @db.Text
+  matchedSkills String[] @default([])
+  missingSkills String[] @default([])
+  createdAt     DateTime @default(now())
+  updatedAt     DateTime @updatedAt
+
+  @@unique([jobId, candidateId])
+  @@index([jobId])
+  @@index([candidateId])
+  @@index([score])
+  @@map("job_matches")
+}
+

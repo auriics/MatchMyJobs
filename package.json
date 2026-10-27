@@ -9,7 +9,8 @@
     "dev:web": "./node_modules/.bin/pnpm --filter @antigravite/web dev",
     "build:types": "./node_modules/.bin/pnpm --filter @antigravite/types build",
     "prisma:generate": "./node_modules/.bin/pnpm --filter @antigravite/api prisma:generate",
-    "prisma:migrate": "./node_modules/.bin/pnpm --filter @antigravite/api prisma:migrate"
+    "prisma:migrate": "./node_modules/.bin/pnpm --filter @antigravite/api prisma:migrate",
+    "admin:provision": "./node_modules/.bin/pnpm --filter @antigravite/api admin:provision"
   },
   "devDependencies": {
     "pnpm": "^12.15.0",

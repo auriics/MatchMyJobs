@@ -127,6 +127,27 @@ export class ProfileService {
       },
     });
 
+    const user = await prisma.user.findUnique({ where: { id: userId } });
+    if (user && !user.organizationId) {
+      const company = await prisma.company.create({
+        data: {
+          name: data.name,
+          slug: data.name.toLowerCase().replace(/[^a-z0-9]/g, '-') + '-' + Math.floor(Math.random() * 10000),
+          website: data.website,
+          industry: data.industry,
+          size: data.size,
+          description: data.description,
+          logoUrl: data.logoUrl,
+          location: data.location,
+          ownerId: userId,
+        },
+      });
+      await prisma.user.update({
+        where: { id: userId },
+        data: { organizationId: company.id },
+      });
+    }
+
     return this.mapCompanyProfile(profile);
   }
 

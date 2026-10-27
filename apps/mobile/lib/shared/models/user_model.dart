@@ -6,6 +6,7 @@ enum UserRole {
   RECRUITER,
   HIRING_MANAGER,
   ADS_MANAGER,
+  ADMIN_MANAGER,
   PLATFORM_ADMIN;
 
   static UserRole fromString(String? role) {
@@ -20,6 +21,8 @@ enum UserRole {
         return UserRole.HIRING_MANAGER;
       case 'ADS_MANAGER':
         return UserRole.ADS_MANAGER;
+      case 'ADMIN_MANAGER':
+        return UserRole.ADMIN_MANAGER;
       case 'PLATFORM_ADMIN':
         return UserRole.PLATFORM_ADMIN;
       default:

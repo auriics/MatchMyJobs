@@ -25,18 +25,26 @@ interface AuthState {
   logout: () => Promise<void>;
 }
 
-// Initial state from localStorage if available
-const storedUser = localStorage.getItem('antigravite_user');
-const storedTokens = localStorage.getItem('antigravite_tokens');
+const safeParseJSON = <T>(val: string | null): T | null => {
+  if (!val || val === 'undefined' || val === 'null') return null;
+  try {
+    return JSON.parse(val) as T;
+  } catch {
+    return null;
+  }
+};
+
+const storedUser = safeParseJSON<UserDto>(localStorage.getItem('antigravite_user'));
+const storedTokens = safeParseJSON<AuthTokens>(localStorage.getItem('antigravite_tokens'));
 
 export const useAuthStore = create<AuthState>((set, get) => ({
-  user: storedUser ? JSON.parse(storedUser) : null,
-  tokens: storedTokens ? JSON.parse(storedTokens) : null,
+  user: storedUser,
+  tokens: storedTokens,
   candidateProfile: null,
   companyProfile: null,
   hasProfile: false,
   isLoading: false,
-  isAuthenticated: Boolean(storedUser && storedTokens),
+  isAuthenticated: Boolean(storedUser && storedTokens?.accessToken),
 
   setAuth: (data: AuthResponse) => {
     localStorage.setItem('antigravite_user', JSON.stringify(data.user));
@@ -72,7 +80,9 @@ export const useAuthStore = create<AuthState>((set, get) => ({
 
   fetchMe: async () => {
     try {
-      set({ isLoading: true });
+      if (!get().user) {
+        set({ isLoading: true });
+      }
       const res = await apiClient.get('/auth/me');
       const data = res.data.data;
 

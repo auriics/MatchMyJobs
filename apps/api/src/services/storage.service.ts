@@ -61,6 +61,46 @@ export class StorageService {
   }
 
   /**
+   * Upload any file buffer (resume, logo, etc.) to AWS S3, or local disk fallback
+   */
+  static async uploadFile(
+    fileBuffer: Buffer,
+    filename: string,
+    mimeType: string,
+    prefix = 'resumes',
+    baseUrl = `http://localhost:${config.port}`
+  ): Promise<{ fileUrl: string; key: string }> {
+    const key = this.generateKey(filename, prefix);
+
+    if (isS3Configured && s3Client) {
+      const command = new PutObjectCommand({
+        Bucket: config.aws.s3BucketName,
+        Key: key,
+        Body: fileBuffer,
+        ContentType: mimeType,
+      });
+
+      await s3Client.send(command);
+
+      const fileUrl = config.aws.endpoint
+        ? `${config.aws.endpoint}/${config.aws.s3BucketName}/${key}`
+        : `https://${config.aws.s3BucketName}.s3.${config.aws.region}.amazonaws.com/${key}`;
+
+      return { fileUrl, key };
+    }
+
+    // Local Disk Fallback
+    const localTargetDir = path.join(config.uploadDir, prefix);
+    await fs.mkdir(localTargetDir, { recursive: true });
+
+    const localFilePath = path.join(config.uploadDir, key);
+    await fs.writeFile(localFilePath, fileBuffer);
+
+    const fileUrl = `${baseUrl}/uploads/${key}`;
+    return { fileUrl, key };
+  }
+
+  /**
    * Generates a pre-signed PUT URL for direct client-to-S3 uploads
    */
   static async getPresignedUploadUrl(

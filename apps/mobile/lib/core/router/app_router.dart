@@ -6,6 +6,8 @@ import '../../features/auth/screens/register_screen.dart';
 import '../../features/auth/screens/login_screen.dart';
 import '../../features/onboarding/screens/onboarding_screen.dart';
 import '../../features/dashboard/screens/home_dashboard_screen.dart';
+import '../../features/resume/screens/resume_upload_screen.dart';
+import '../../features/jobs/screens/job_listing_screen.dart';
 
 CustomTransitionPage<T> buildPageWithSlideFadeTransition<T>({
   required BuildContext context,
@@ -91,6 +93,22 @@ final GoRouter appRouter = GoRouter(
         context: context,
         state: state,
         child: const HomeDashboardScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/resume-upload',
+      pageBuilder: (context, state) => buildPageWithSlideFadeTransition(
+        context: context,
+        state: state,
+        child: const ResumeUploadScreen(),
+      ),
+    ),
+    GoRoute(
+      path: '/jobs',
+      pageBuilder: (context, state) => buildPageWithSlideFadeTransition(
+        context: context,
+        state: state,
+        child: const JobListingScreen(),
       ),
     ),
   ],

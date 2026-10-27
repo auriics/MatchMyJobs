@@ -20,6 +20,7 @@ class RegisterScreen extends ConsumerStatefulWidget {
 
 class _RegisterScreenState extends ConsumerState<RegisterScreen> {
   final _formKey = GlobalKey<FormState>();
+  final _companyNameController = TextEditingController();
   final _emailController = TextEditingController();
   final _passwordController = TextEditingController();
   final _confirmPasswordController = TextEditingController();
@@ -34,6 +35,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
 
   @override
   void dispose() {
+    _companyNameController.dispose();
     _emailController.dispose();
     _passwordController.dispose();
     _confirmPasswordController.dispose();
@@ -44,11 +46,15 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
     if (_formKey.currentState?.validate() ?? false) {
       final email = _emailController.text.trim();
       final password = _passwordController.text;
+      final companyName = _role == UserRole.COMPANY_OWNER
+          ? _companyNameController.text.trim()
+          : null;
 
       final success = await ref.read(authStateProvider.notifier).register(
             email: email,
             password: password,
             role: _role,
+            companyName: companyName,
           );
 
       if (success && mounted) {
@@ -108,7 +114,7 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                       border: Border.all(color: AppColors.primary),
                     ),
                     child: Text(
-                      _role.name,
+                      _role == UserRole.CANDIDATE ? 'Candidate' : 'Company Owner',
                       style: const TextStyle(
                         fontSize: 11,
                         fontWeight: FontWeight.w700,
@@ -215,6 +221,18 @@ class _RegisterScreenState extends ConsumerState<RegisterScreen> {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
+                    if (_role == UserRole.COMPANY_OWNER) ...[
+                      AppTextField(
+                        label: 'Company / Organization Name',
+                        hintText: 'e.g. Acme Technologies',
+                        controller: _companyNameController,
+                        prefixIcon: const Icon(Icons.business_outlined),
+                        validator: FormBuilderValidators.required(
+                          errorText: 'Company name is required',
+                        ),
+                      ),
+                      const SizedBox(height: 16),
+                    ],
                     AppTextField(
                       label: 'Email Address',
                       hintText: 'name@example.com',

@@ -41,6 +41,7 @@ dependencies:
   # UI & Styling
   shimmer: ^4.0.0
   google_fonts: ^6.3.3
+  file_picker: ^13.3.0
 
 dev_dependencies:
   flutter_test:

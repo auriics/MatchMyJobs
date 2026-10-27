@@ -55,4 +55,6 @@ export const config = {
     .map((url) => url.trim()),
 
   uploadDir: path.resolve(process.cwd(), 'uploads'),
+
+  openaiApiKey: process.env.OPENAI_API_KEY || '',
 };

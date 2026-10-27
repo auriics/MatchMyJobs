@@ -12,10 +12,6 @@ import { SocialAuthButtons } from '../components/common/SocialAuthButtons';
 import {
   User,
   Building2,
-  Briefcase,
-  Users,
-  Megaphone,
-  ShieldCheck,
   Mail,
   Lock,
   ArrowRight,
@@ -31,63 +27,32 @@ const registerFormSchema = z
       .regex(/[A-Za-z]/, 'Must include at least one letter')
       .regex(/[0-9]/, 'Must include at least one number'),
     confirmPassword: z.string().min(1, 'Please confirm your password'),
-    role: z.nativeEnum(UserRole),
+    role: z.enum([UserRole.CANDIDATE, UserRole.COMPANY_OWNER]),
+    companyName: z.string().optional(),
   })
   .refine((data) => data.password === data.confirmPassword, {
     message: "Passwords don't match",
     path: ['confirmPassword'],
-  });
+  })
+  .refine(
+    (data) => {
+      if (data.role === UserRole.COMPANY_OWNER && (!data.companyName || data.companyName.trim().length === 0)) {
+        return false;
+      }
+      return true;
+    },
+    {
+      message: 'Company name is required for employer registration',
+      path: ['companyName'],
+    }
+  );
 
 type RegisterFormData = z.infer<typeof registerFormSchema>;
 
-interface RoleOption {
-  role: UserRole;
-  title: string;
-  description: string;
-  icon: React.ElementType;
-}
-
-const roleOptions: RoleOption[] = [
-  {
-    role: UserRole.CANDIDATE,
-    title: 'Candidate',
-    description: 'Find AI-matched opportunities tailored to your skills and salary goals.',
-    icon: User,
-  },
-  {
-    role: UserRole.COMPANY_OWNER,
-    title: 'Company Owner',
-    description: 'Build your company profile and hire top talent with AI-driven matching.',
-    icon: Building2,
-  },
-  {
-    role: UserRole.RECRUITER,
-    title: 'Recruiter',
-    description: 'Source and qualify pre-matched candidates for multiple clients.',
-    icon: Briefcase,
-  },
-  {
-    role: UserRole.HIRING_MANAGER,
-    title: 'Hiring Manager',
-    description: 'Review top candidate profiles, shortlist and streamline team hires.',
-    icon: Users,
-  },
-  {
-    role: UserRole.ADS_MANAGER,
-    title: 'Ads Manager',
-    description: 'Manage featured job campaigns and spotlight opportunities.',
-    icon: Megaphone,
-  },
-  {
-    role: UserRole.PLATFORM_ADMIN,
-    title: 'Platform Admin',
-    description: 'System administration, compliance, and platform oversight.',
-    icon: ShieldCheck,
-  },
-];
-
 export const RegisterPage: React.FC = () => {
-  const [selectedRole, setSelectedRole] = useState<UserRole>(UserRole.CANDIDATE);
+  const [selectedRole, setSelectedRole] = useState<UserRole.CANDIDATE | UserRole.COMPANY_OWNER>(
+    UserRole.CANDIDATE
+  );
   const [serverError, setServerError] = useState<string | null>(null);
   const { setAuth } = useAuthStore();
   const navigate = useNavigate();
@@ -104,7 +69,7 @@ export const RegisterPage: React.FC = () => {
     },
   });
 
-  const handleRoleSelect = (role: UserRole) => {
+  const handleRoleSelect = (role: UserRole.CANDIDATE | UserRole.COMPANY_OWNER) => {
     setSelectedRole(role);
     setValue('role', role, { shouldValidate: true });
   };
@@ -116,6 +81,7 @@ export const RegisterPage: React.FC = () => {
         email: data.email,
         password: data.password,
         role: data.role,
+        companyName: data.companyName,
       });
 
       const authData = res.data.data;
@@ -131,74 +97,110 @@ export const RegisterPage: React.FC = () => {
 
   return (
     <div className="min-h-screen bg-gradient-to-b from-[#e2f7f9]/50 via-white to-white py-12 px-4 sm:px-6 lg:px-8 flex flex-col justify-center">
-      <div className="max-w-4xl mx-auto w-full">
+      <div className="max-w-3xl mx-auto w-full">
         {/* Header */}
         <div className="text-center mb-8">
           <div className="inline-flex items-center space-x-2 px-3 py-1 rounded-full bg-[#d1f4f3] text-[#062224] text-xs font-semibold uppercase tracking-wider mb-3">
             <Sparkles className="w-3.5 h-3.5 text-[#3eb8bb]" />
-            <span>Join AntiGravite</span>
+            <span>Join MatchMyJobs</span>
           </div>
           <h1 className="text-3xl sm:text-4xl font-extrabold text-[#062224] tracking-tight">
             Create Your Account
           </h1>
           <p className="mt-2 text-sm text-gray-500 max-w-md mx-auto">
-            Choose your role to get started with intelligent AI job matching
+            Choose whether you are looking for career opportunities or hiring top talent
           </p>
         </div>
 
-        {/* Role Picker Section */}
+        {/* Step 1: Account Type Selection */}
         <div className="mb-8">
           <label className="block text-xs font-bold text-[#062224] uppercase tracking-wider mb-3 text-center sm:text-left">
-            Step 1: Select Your Role
+            Step 1: Choose Account Type
           </label>
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-3">
-            {roleOptions.map((opt) => {
-              const Icon = opt.icon;
-              const isSelected = selectedRole === opt.role;
-              return (
-                <button
-                  type="button"
-                  key={opt.role}
-                  onClick={() => handleRoleSelect(opt.role)}
-                  className={`text-left p-4 rounded-2xl border-2 transition-all duration-200 relative group flex flex-col justify-between ${
-                    isSelected
-                      ? 'border-[#60d1d4] bg-[#e2f7f9] shadow-md shadow-[#60d1d4]/20 scale-[1.01]'
-                      : 'border-gray-200 bg-white hover:border-[#b1f0ee] hover:bg-[#e2f7f9]/30'
-                  }`}
-                >
-                  <div>
-                    <div className="flex items-center justify-between mb-2">
-                      <div
-                        className={`w-9 h-9 rounded-xl flex items-center justify-center transition-colors ${
-                          isSelected
-                            ? 'bg-[#60d1d4] text-[#062224]'
-                            : 'bg-gray-100 text-gray-600 group-hover:bg-[#d1f4f3]'
-                        }`}
-                      >
-                        <Icon className="w-4 h-4" />
-                      </div>
-                      <span
-                        className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
-                          isSelected
-                            ? 'border-[#3eb8bb] bg-[#3eb8bb]'
-                            : 'border-gray-300'
-                        }`}
-                      >
-                        {isSelected && (
-                          <span className="w-1.5 h-1.5 bg-white rounded-full" />
-                        )}
-                      </span>
-                    </div>
-                    <h3 className="font-semibold text-sm text-[#062224]">
-                      {opt.title}
-                    </h3>
-                    <p className="text-xs text-gray-500 mt-1 line-clamp-2">
-                      {opt.description}
-                    </p>
+          <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+            {/* Candidate Option */}
+            <button
+              type="button"
+              onClick={() => handleRoleSelect(UserRole.CANDIDATE)}
+              className={`text-left p-5 rounded-2xl border-2 transition-all duration-200 flex flex-col justify-between ${
+                selectedRole === UserRole.CANDIDATE
+                  ? 'border-[#60d1d4] bg-[#e2f7f9] shadow-lg shadow-[#60d1d4]/20 scale-[1.01]'
+                  : 'border-gray-200 bg-white hover:border-[#b1f0ee] hover:bg-[#e2f7f9]/20'
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      selectedRole === UserRole.CANDIDATE
+                        ? 'bg-[#60d1d4] text-[#062224]'
+                        : 'bg-gray-100 text-gray-600'
+                    }`}
+                  >
+                    <User className="w-5 h-5" />
                   </div>
-                </button>
-              );
-            })}
+                  <span
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      selectedRole === UserRole.CANDIDATE
+                        ? 'border-[#3eb8bb] bg-[#3eb8bb]'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    {selectedRole === UserRole.CANDIDATE && (
+                      <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                    )}
+                  </span>
+                </div>
+                <h3 className="font-bold text-base text-[#062224]">
+                  Candidate / Job Seeker
+                </h3>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  Discover precision AI-matched job opportunities, track applications, and manage interviews.
+                </p>
+              </div>
+            </button>
+
+            {/* Company Option */}
+            <button
+              type="button"
+              onClick={() => handleRoleSelect(UserRole.COMPANY_OWNER)}
+              className={`text-left p-5 rounded-2xl border-2 transition-all duration-200 flex flex-col justify-between ${
+                selectedRole === UserRole.COMPANY_OWNER
+                  ? 'border-[#60d1d4] bg-[#e2f7f9] shadow-lg shadow-[#60d1d4]/20 scale-[1.01]'
+                  : 'border-gray-200 bg-white hover:border-[#b1f0ee] hover:bg-[#e2f7f9]/20'
+              }`}
+            >
+              <div>
+                <div className="flex items-center justify-between mb-3">
+                  <div
+                    className={`w-10 h-10 rounded-xl flex items-center justify-center ${
+                      selectedRole === UserRole.COMPANY_OWNER
+                        ? 'bg-[#60d1d4] text-[#062224]'
+                        : 'bg-gray-100 text-gray-600'
+                    }`}
+                  >
+                    <Building2 className="w-5 h-5" />
+                  </div>
+                  <span
+                    className={`w-4 h-4 rounded-full border-2 flex items-center justify-center ${
+                      selectedRole === UserRole.COMPANY_OWNER
+                        ? 'border-[#3eb8bb] bg-[#3eb8bb]'
+                        : 'border-gray-300'
+                    }`}
+                  >
+                    {selectedRole === UserRole.COMPANY_OWNER && (
+                      <span className="w-1.5 h-1.5 bg-white rounded-full" />
+                    )}
+                  </span>
+                </div>
+                <h3 className="font-bold text-base text-[#062224]">
+                  Employer / Company
+                </h3>
+                <p className="text-xs text-gray-500 mt-1 leading-relaxed">
+                  Establish an organization, post job opportunities, invite recruiters and hiring managers.
+                </p>
+              </div>
+            </button>
           </div>
         </div>
 
@@ -206,10 +208,13 @@ export const RegisterPage: React.FC = () => {
         <div className="bg-white rounded-3xl p-6 sm:p-8 border border-gray-100 shadow-xl shadow-[#60d1d4]/10 max-w-xl mx-auto">
           <div className="mb-6">
             <h2 className="text-lg font-bold text-[#062224]">
-              Step 2: Sign Up as <span className="text-[#3eb8bb]">{selectedRole}</span>
+              Step 2: Sign Up as{' '}
+              <span className="text-[#3eb8bb]">
+                {selectedRole === UserRole.CANDIDATE ? 'Candidate' : 'Company Owner'}
+              </span>
             </h2>
             <p className="text-xs text-gray-500 mt-0.5">
-              Enter your credentials or use quick single sign-on
+              Enter your credentials to create your secure account
             </p>
           </div>
 
@@ -236,6 +241,17 @@ export const RegisterPage: React.FC = () => {
           {/* Registration Form */}
           <form onSubmit={handleSubmit(onSubmit)} className="space-y-4">
             <input type="hidden" {...register('role')} />
+
+            {selectedRole === UserRole.COMPANY_OWNER && (
+              <Input
+                label="Company / Organization Name"
+                type="text"
+                placeholder="e.g. Acme Technologies"
+                leftIcon={<Building2 className="w-4 h-4" />}
+                error={errors.companyName?.message}
+                {...register('companyName')}
+              />
+            )}
 
             <Input
               label="Email Address"
@@ -272,19 +288,21 @@ export const RegisterPage: React.FC = () => {
               isLoading={isSubmitting}
               rightIcon={<ArrowRight className="w-4 h-4" />}
             >
-              Continue to Onboarding
+              Create Account
             </Button>
           </form>
 
-          <p className="mt-6 text-center text-xs text-gray-500">
-            Already have an account?{' '}
-            <Link
-              to="/login"
-              className="font-bold text-[#062224] hover:text-[#3eb8bb] underline decoration-[#60d1d4] decoration-2 underline-offset-4"
-            >
-              Sign In
-            </Link>
-          </p>
+          <div className="mt-6 pt-4 border-t border-gray-100 text-center text-xs text-gray-500">
+            <p>
+              Already have an account?{' '}
+              <Link
+                to="/login"
+                className="font-bold text-[#062224] hover:text-[#3eb8bb] underline decoration-[#60d1d4] decoration-2 underline-offset-4"
+              >
+                Sign In
+              </Link>
+            </p>
+          </div>
         </div>
       </div>
     </div>

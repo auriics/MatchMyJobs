@@ -1,12 +1,19 @@
 import React from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link, useNavigate, useLocation } from 'react-router-dom';
 import { useAuthStore } from '../../stores/authStore';
+import { UserRole } from '@antigravite/types';
 import { Sparkles, LogOut, User as UserIcon } from 'lucide-react';
 
 export const Navbar: React.FC = () => {
   const { user, candidateProfile, companyProfile, isAuthenticated, logout } =
     useAuthStore();
   const navigate = useNavigate();
+  const location = useLocation();
+
+  // Hide public navbar on platform admin routes
+  if (location.pathname.startsWith('/platform-admin')) {
+    return null;
+  }
 
   const handleLogout = async () => {
     await logout();
@@ -19,8 +26,19 @@ export const Navbar: React.FC = () => {
   const avatarUrl =
     candidateProfile?.avatarUrl || companyProfile?.logoUrl;
 
+  const getDashboardPath = () => {
+    if (!user) return '/dashboard';
+    if (user.role === UserRole.PLATFORM_ADMIN || user.role === UserRole.ADMIN_MANAGER) {
+      return '/platform-admin/dashboard';
+    }
+    if (user.role === UserRole.CANDIDATE) {
+      return '/candidate/dashboard';
+    }
+    return '/company/dashboard';
+  };
+
   return (
-    <header className="sticky top-0 z-50 bg-white/90 backdrop-blur-md border-b border-[#e2f7f9] shadow-sm">
+    <header className="sticky top-0 z-50 bg-white/95 backdrop-blur-md border-b border-[#e2f7f9] shadow-xs">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 h-16 flex items-center justify-between">
         {/* Brand Logo */}
         <Link to="/" className="flex items-center space-x-2.5 group">
@@ -29,7 +47,7 @@ export const Navbar: React.FC = () => {
           </div>
           <div>
             <span className="font-display font-extrabold text-xl tracking-tight text-[#062224]">
-              AntiGrav<span className="text-[#3eb8bb]">ite</span>
+              Match<span className="text-[#3eb8bb]">MyJobs</span>
             </span>
             <span className="hidden sm:inline-block ml-2 text-[10px] font-semibold tracking-wider uppercase px-2 py-0.5 rounded-full bg-[#d1f4f3] text-[#062224]">
               AI Matching
@@ -42,8 +60,8 @@ export const Navbar: React.FC = () => {
           {isAuthenticated && user ? (
             <div className="flex items-center space-x-4">
               <Link
-                to="/dashboard"
-                className="text-sm font-medium text-[#062224] hover:text-[#3eb8bb] transition-colors"
+                to={getDashboardPath()}
+                className="text-sm font-semibold text-[#062224] hover:text-[#3eb8bb] transition-colors"
               >
                 Dashboard
               </Link>

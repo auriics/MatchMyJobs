@@ -15,11 +15,11 @@ const COOKIE_OPTIONS = {
 export class AuthController {
   static async register(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      const { email, password, role } = req.body;
+      const { email, password, role, companyName } = req.body;
       const userAgent = req.headers['user-agent'];
       const ipAddress = req.ip || req.socket.remoteAddress;
 
-      const result = await AuthService.register(email, password, role, userAgent, ipAddress);
+      const result = await AuthService.register(email, password, role, companyName, userAgent, ipAddress);
 
       // Set httpOnly cookie for web clients
       res.cookie(COOKIE_NAME, result.tokens.refreshToken, COOKIE_OPTIONS);
@@ -28,6 +28,10 @@ export class AuthController {
     } catch (error: any) {
       if (error.message.includes('already exists')) {
         sendError(res, error.message, 409, 'USER_EXISTS');
+        return;
+      }
+      if (error.message.includes('Privileged and company internal roles')) {
+        sendError(res, error.message, 403, 'PRIVILEGED_ROLE_FORBIDDEN');
         return;
       }
       next(error);
@@ -51,13 +55,47 @@ export class AuthController {
         sendError(res, error.message, 401, 'INVALID_CREDENTIALS');
         return;
       }
+      if (error.message.includes('suspended')) {
+        sendError(res, error.message, 403, 'ACCOUNT_SUSPENDED');
+        return;
+      }
+      next(error);
+    }
+  }
+
+  /**
+   * Dedicated Platform Administration Login
+   */
+  static async adminLogin(req: Request, res: Response, next: NextFunction): Promise<void> {
+    try {
+      const { email, password, mfaCode } = req.body;
+      const userAgent = req.headers['user-agent'];
+      const ipAddress = req.ip || req.socket.remoteAddress;
+
+      const result = await AuthService.adminLogin(email, password, mfaCode, userAgent, ipAddress);
+
+      res.cookie(COOKIE_NAME, result.tokens.refreshToken, COOKIE_OPTIONS);
+
+      sendSuccess(res, result, 'Administrator authentication successful');
+    } catch (error: any) {
+      if (error.message.includes('Invalid email or password')) {
+        sendError(res, 'Invalid administrator credentials.', 401, 'INVALID_CREDENTIALS');
+        return;
+      }
+      if (error.message.includes('suspended')) {
+        sendError(res, error.message, 403, 'ADMIN_ACCOUNT_SUSPENDED');
+        return;
+      }
+      if (error.message.includes('Multi-Factor')) {
+        sendError(res, error.message, 401, 'MFA_REQUIRED');
+        return;
+      }
       next(error);
     }
   }
 
   static async refresh(req: Request, res: Response, next: NextFunction): Promise<void> {
     try {
-      // Refresh token can come from httpOnly cookie (web) or body/header (mobile)
       const token =
         req.cookies?.[COOKIE_NAME] ||
         req.body?.refreshToken ||
@@ -70,7 +108,6 @@ export class AuthController {
 
       const result = await AuthService.refresh(token);
 
-      // Set updated httpOnly cookie
       res.cookie(COOKIE_NAME, result.refreshToken, COOKIE_OPTIONS);
 
       sendSuccess(res, result, 'Token refreshed successfully');
@@ -89,7 +126,6 @@ export class AuthController {
 
       await AuthService.logout(token, req.user?.id);
 
-      // Clear cookie
       res.clearCookie(COOKIE_NAME, { path: '/' });
 
       sendSuccess(res, null, 'Logged out successfully');

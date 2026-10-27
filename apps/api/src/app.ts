@@ -30,7 +30,9 @@ export function createApp() {
         if (
           allowedOrigins.includes(origin) ||
           origin.includes('localhost') ||
-          origin.includes('127.0.0.1')
+          origin.includes('127.0.0.1') ||
+          origin.includes('ngrok') ||
+          origin.includes('192.168.')
         ) {
           return callback(null, true);
         }

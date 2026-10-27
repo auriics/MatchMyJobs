@@ -2,10 +2,11 @@ import { Router } from 'express';
 import { AuthController } from '../controllers/auth.controller.js';
 import { authenticateJwt } from '../middleware/auth.middleware.js';
 import { validateBody } from '../middleware/validation.middleware.js';
-import { authRateLimiter } from '../middleware/rateLimiter.middleware.js';
+import { authRateLimiter, adminAuthRateLimiter } from '../middleware/rateLimiter.middleware.js';
 import {
   registerSchema,
   loginSchema,
+  adminLoginSchema,
   refreshTokenSchema,
   oauthSchema,
 } from '../schemas/auth.schema.js';
@@ -24,6 +25,23 @@ router.post(
   authRateLimiter,
   validateBody(loginSchema),
   AuthController.login
+);
+
+/**
+ * Dedicated Platform Administrator & Admin Manager login endpoint
+ */
+router.post(
+  '/admin/login',
+  adminAuthRateLimiter,
+  validateBody(adminLoginSchema),
+  AuthController.adminLogin
+);
+
+router.post(
+  '/admin-login',
+  adminAuthRateLimiter,
+  validateBody(adminLoginSchema),
+  AuthController.adminLogin
 );
 
 router.post(

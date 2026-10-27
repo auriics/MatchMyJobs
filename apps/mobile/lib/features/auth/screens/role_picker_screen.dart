@@ -17,39 +17,15 @@ class _RolePickerScreenState extends State<RolePickerScreen> {
   final List<({UserRole role, String title, String desc, IconData icon})> _roles = [
     (
       role: UserRole.CANDIDATE,
-      title: 'Job Candidate',
-      desc: 'Discover tailored AI job matches, salary benchmarks, and opportunities.',
+      title: 'Candidate / Job Seeker',
+      desc: 'Discover precision AI-matched job opportunities, track applications, and manage interviews.',
       icon: Icons.person_search_outlined,
     ),
     (
       role: UserRole.COMPANY_OWNER,
-      title: 'Company Owner',
-      desc: 'Build your organization and attract pre-matched top-tier talent.',
+      title: 'Employer / Company',
+      desc: 'Establish an organization, post job opportunities, invite recruiters and hiring managers.',
       icon: Icons.business_outlined,
-    ),
-    (
-      role: UserRole.RECRUITER,
-      title: 'Recruiter',
-      desc: 'Source, evaluate, and place candidate talent pools with AI pipelines.',
-      icon: Icons.work_outline,
-    ),
-    (
-      role: UserRole.HIRING_MANAGER,
-      title: 'Hiring Manager',
-      desc: 'Review top candidate profiles, shortlist and streamline team hires.',
-      icon: Icons.groups_outlined,
-    ),
-    (
-      role: UserRole.ADS_MANAGER,
-      title: 'Ads Manager',
-      desc: 'Launch sponsored listings and maximize company visibility.',
-      icon: Icons.campaign_outlined,
-    ),
-    (
-      role: UserRole.PLATFORM_ADMIN,
-      title: 'Platform Admin',
-      desc: 'Platform compliance, security, analytics, and infrastructure oversight.',
-      icon: Icons.admin_panel_settings_outlined,
     ),
   ];
 
@@ -187,7 +163,7 @@ class _RolePickerScreenState extends State<RolePickerScreen> {
               ),
               const SizedBox(height: 12),
               AppButton(
-                text: 'Continue with ${_selectedRole.name}',
+                text: 'Continue as ${_selectedRole == UserRole.CANDIDATE ? 'Candidate' : 'Company Owner'}',
                 onPressed: () {
                   context.push('/register?role=${_selectedRole.toApiString()}');
                 },
