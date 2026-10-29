@@ -1,0 +1,547 @@
+{
+  "executedAt": "2026-10-29T20:51:34.392Z",
+  "totalTestCases": 13,
+  "passedCount": 13,
+  "failedCount": 0,
+  "testResults": [
+    {
+      "id": "TC-ROLE-01",
+      "category": "Candidate Role Access",
+      "roleUnderScore": "CANDIDATE",
+      "scenario": "Candidate matches active jobs against their own profile",
+      "endpoint": "POST /api/match/jobs",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 610,
+      "details": {
+        "matchesFound": 3,
+        "topMatchJob": "Senior Frontend Engineer",
+        "topMatchScore": 73,
+        "matchedSkills": [
+          "React",
+          "TypeScript",
+          "Next.js",
+          "TailwindCSS"
+        ],
+        "missingSkills": [],
+        "reason": "Solid React, TypeScript, Next.js background; aligns with key requirements"
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-02",
+      "category": "Candidate Role Access",
+      "roleUnderScore": "CANDIDATE",
+      "scenario": "Candidate retrieves saved job matches",
+      "endpoint": "GET /api/match/jobs",
+      "httpMethod": "GET",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 167,
+      "details": {
+        "count": 3
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-03",
+      "category": "RBAC Enforcement",
+      "roleUnderScore": "CANDIDATE",
+      "scenario": "Candidate blocked from querying recruiter candidate-ranking endpoint",
+      "endpoint": "POST /api/match/candidates",
+      "httpMethod": "POST",
+      "expectedStatus": 403,
+      "actualStatus": 403,
+      "executionTimeMs": 3,
+      "details": {},
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-04",
+      "category": "RBAC Enforcement",
+      "roleUnderScore": "CANDIDATE",
+      "scenario": "Candidate blocked from viewing candidates for job",
+      "endpoint": "GET /api/match/candidates/:jobId",
+      "httpMethod": "GET",
+      "expectedStatus": 403,
+      "actualStatus": 403,
+      "executionTimeMs": 1,
+      "details": {},
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-05",
+      "category": "Recruiter Matching",
+      "roleUnderScore": "RECRUITER",
+      "scenario": "Recruiter scores and ranks all candidates for Senior Frontend role",
+      "endpoint": "POST /api/match/candidates",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 814,
+      "details": {
+        "jobTitle": "Senior Frontend Engineer",
+        "rankedCandidates": [
+          {
+            "name": "Alex Morgan (Lead Fullstack Dev)",
+            "score": 76,
+            "matchedSkills": [
+              "React",
+              "TypeScript",
+              "Next.js",
+              "TailwindCSS"
+            ],
+            "missingSkills": [],
+            "reason": "Solid React, TypeScript, Next.js background; aligns with key requirements"
+          },
+          {
+            "name": "Dr. Elena Rostova (AI/ML Scientist)",
+            "score": 13,
+            "matchedSkills": [],
+            "missingSkills": [
+              "React",
+              "TypeScript",
+              "Next.js",
+              "TailwindCSS"
+            ],
+            "reason": "Potential match; could expand into React, TypeScript"
+          },
+          {
+            "name": "can 1",
+            "score": 12,
+            "matchedSkills": [],
+            "missingSkills": [
+              "React",
+              "TypeScript",
+              "Next.js",
+              "TailwindCSS"
+            ],
+            "reason": "Potential match; could expand into React, TypeScript"
+          },
+          {
+            "name": "Marco Rossi (Culinary Director)",
+            "score": 12,
+            "matchedSkills": [],
+            "missingSkills": [
+              "React",
+              "TypeScript",
+              "Next.js",
+              "TailwindCSS"
+            ],
+            "reason": "Potential match; could expand into React, TypeScript"
+          }
+        ]
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-06",
+      "category": "Recruiter Matching",
+      "roleUnderScore": "RECRUITER",
+      "scenario": "Recruiter scores and ranks all candidates for Senior AI & Python role",
+      "endpoint": "POST /api/match/candidates",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 746,
+      "details": {
+        "jobTitle": "Senior AI & Python Engineer",
+        "topCandidate": "Dr. Elena Rostova (AI/ML Scientist)",
+        "topScore": 70,
+        "matchedSkills": [
+          "Python",
+          "FastAPI",
+          "PyTorch",
+          "LangChain",
+          "Docker"
+        ],
+        "missingSkills": []
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-07",
+      "category": "RBAC Enforcement",
+      "roleUnderScore": "RECRUITER",
+      "scenario": "Recruiter blocked from calling candidate-specific job match endpoint",
+      "endpoint": "POST /api/match/jobs",
+      "httpMethod": "POST",
+      "expectedStatus": 403,
+      "actualStatus": 403,
+      "executionTimeMs": 2,
+      "details": {},
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-08",
+      "category": "Hiring Manager Access",
+      "roleUnderScore": "HIRING_MANAGER",
+      "scenario": "Hiring Manager scores candidate pool for Frontend job",
+      "endpoint": "POST /api/match/candidates",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 875,
+      "details": {
+        "count": 4
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-09",
+      "category": "RBAC Enforcement",
+      "roleUnderScore": "HIRING_MANAGER",
+      "scenario": "Hiring Manager blocked from candidate matching endpoint",
+      "endpoint": "POST /api/match/jobs",
+      "httpMethod": "POST",
+      "expectedStatus": 403,
+      "actualStatus": 403,
+      "executionTimeMs": 2,
+      "details": {},
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-10",
+      "category": "Company Owner Access",
+      "roleUnderScore": "COMPANY_OWNER",
+      "scenario": "Company Owner retrieves candidate rankings for Executive Chef job",
+      "endpoint": "GET /api/match/candidates/:jobId",
+      "httpMethod": "GET",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 1010,
+      "details": {
+        "jobTitle": "Executive Chef & Kitchen Lead",
+        "topCandidate": "Marco Rossi (Culinary Director)",
+        "topScore": 71,
+        "matchedSkills": [
+          "Culinary Arts",
+          "Menu Engineering",
+          "HACCP",
+          "Food Safety"
+        ]
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-11",
+      "category": "Platform Admin Access",
+      "roleUnderScore": "PLATFORM_ADMIN",
+      "scenario": "Platform Admin has unrestricted access to candidate match endpoint",
+      "endpoint": "POST /api/match/jobs",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 210,
+      "details": {
+        "allowed": true
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-12",
+      "category": "Platform Admin Access",
+      "roleUnderScore": "PLATFORM_ADMIN",
+      "scenario": "Platform Admin has unrestricted access to recruiter match endpoint",
+      "endpoint": "POST /api/match/candidates",
+      "httpMethod": "POST",
+      "expectedStatus": 200,
+      "actualStatus": 200,
+      "executionTimeMs": 812,
+      "details": {
+        "allowed": true
+      },
+      "passed": true
+    },
+    {
+      "id": "TC-ROLE-13",
+      "category": "Authentication Security",
+      "roleUnderScore": "ANONYMOUS",
+      "scenario": "Unauthenticated requests rejected with 401 Unauthorized",
+      "endpoint": "POST /api/match/jobs",
+      "httpMethod": "POST",
+      "expectedStatus": 401,
+      "actualStatus": 401,
+      "executionTimeMs": 1,
+      "details": {},
+      "passed": true
+    }
+  ],
+  "persistedMatches": [
+    {
+      "id": "f5ed9ede-bfd3-407f-b935-07287721a7b6",
+      "candidate": "Alex Morgan (Lead Fullstack Dev)",
+      "email": "candidate_124272@test.com",
+      "jobTitle": "Senior Frontend Engineer",
+      "jobRequirements": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "score": 76,
+      "matchedSkills": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "missingSkills": [],
+      "reason": "Solid React, TypeScript, Next.js background; aligns with key requirements",
+      "createdAt": "2026-10-29T20:51:29.185Z"
+    },
+    {
+      "id": "dcbdd9df-e3e7-431e-a0dc-640b95975e90",
+      "candidate": "Marco Rossi (Culinary Director)",
+      "email": "cand_chef@test.com",
+      "jobTitle": "Executive Chef & Kitchen Lead",
+      "jobRequirements": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "score": 71,
+      "matchedSkills": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "missingSkills": [],
+      "reason": "Solid Culinary Arts, Menu Engineering, HACCP background; aligns with key requirements",
+      "createdAt": "2026-10-29T20:51:32.914Z"
+    },
+    {
+      "id": "af3f3fe7-daa7-4793-a3ee-d992007b209c",
+      "candidate": "Dr. Elena Rostova (AI/ML Scientist)",
+      "email": "cand_ai_python@test.com",
+      "jobTitle": "Senior AI & Python Engineer",
+      "jobRequirements": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "score": 70,
+      "matchedSkills": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "missingSkills": [],
+      "reason": "Solid Python, FastAPI, PyTorch background; aligns with key requirements",
+      "createdAt": "2026-10-29T20:51:30.913Z"
+    },
+    {
+      "id": "e40eca97-56a2-4278-b3cc-432dc67e979b",
+      "candidate": "Alex Morgan (Lead Fullstack Dev)",
+      "email": "candidate_124272@test.com",
+      "jobTitle": "Senior AI & Python Engineer",
+      "jobRequirements": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "score": 33,
+      "matchedSkills": [
+        "Docker"
+      ],
+      "missingSkills": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain"
+      ],
+      "reason": "Relevant proficiency in Docker",
+      "createdAt": "2026-10-29T20:51:29.283Z"
+    },
+    {
+      "id": "adfb15da-4b78-4cce-8355-2adaec4e68fc",
+      "candidate": "can 1",
+      "email": "candidate1@jobseeker.com",
+      "jobTitle": "Senior AI & Python Engineer",
+      "jobRequirements": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "score": 29,
+      "matchedSkills": [
+        "Python"
+      ],
+      "missingSkills": [
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "reason": "Relevant proficiency in Python",
+      "createdAt": "2026-10-29T20:51:30.723Z"
+    },
+    {
+      "id": "88402a70-5b48-4460-8318-be5b0ccc93cd",
+      "candidate": "Dr. Elena Rostova (AI/ML Scientist)",
+      "email": "cand_ai_python@test.com",
+      "jobTitle": "Senior Frontend Engineer",
+      "jobRequirements": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "score": 13,
+      "matchedSkills": [],
+      "missingSkills": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "reason": "Potential match; could expand into React, TypeScript",
+      "createdAt": "2026-10-29T20:51:30.257Z"
+    },
+    {
+      "id": "3e89b34e-5bc5-4b74-81fd-480ac9c49748",
+      "candidate": "Dr. Elena Rostova (AI/ML Scientist)",
+      "email": "cand_ai_python@test.com",
+      "jobTitle": "Executive Chef & Kitchen Lead",
+      "jobRequirements": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "reason": "Potential match; could expand into Culinary Arts, Menu Engineering",
+      "createdAt": "2026-10-29T20:51:32.698Z"
+    },
+    {
+      "id": "69a64bf6-1605-47f5-a6fc-1e233da431f2",
+      "candidate": "can 1",
+      "email": "candidate1@jobseeker.com",
+      "jobTitle": "Executive Chef & Kitchen Lead",
+      "jobRequirements": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "reason": "Potential match; could expand into Culinary Arts, Menu Engineering",
+      "createdAt": "2026-10-29T20:51:32.518Z"
+    },
+    {
+      "id": "15a0822e-ec36-4bd0-8b37-45f7ef9ab7d4",
+      "candidate": "Marco Rossi (Culinary Director)",
+      "email": "cand_chef@test.com",
+      "jobTitle": "Senior AI & Python Engineer",
+      "jobRequirements": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "Python",
+        "FastAPI",
+        "PyTorch",
+        "LangChain",
+        "Docker"
+      ],
+      "reason": "Potential match; could expand into Python, FastAPI",
+      "createdAt": "2026-10-29T20:51:31.004Z"
+    },
+    {
+      "id": "d8584481-ec73-4445-8861-654bfb6f2cc9",
+      "candidate": "Marco Rossi (Culinary Director)",
+      "email": "cand_chef@test.com",
+      "jobTitle": "Senior Frontend Engineer",
+      "jobRequirements": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "reason": "Potential match; could expand into React, TypeScript",
+      "createdAt": "2026-10-29T20:51:30.360Z"
+    },
+    {
+      "id": "69aeba67-4550-49b5-9209-2d29096373f4",
+      "candidate": "can 1",
+      "email": "candidate1@jobseeker.com",
+      "jobTitle": "Senior Frontend Engineer",
+      "jobRequirements": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "React",
+        "TypeScript",
+        "Next.js",
+        "TailwindCSS"
+      ],
+      "reason": "Potential match; could expand into React, TypeScript",
+      "createdAt": "2026-10-29T20:13:51.542Z"
+    },
+    {
+      "id": "ca4c935b-a1e9-43fd-a452-ddc2fb59fb73",
+      "candidate": "Alex Morgan (Lead Fullstack Dev)",
+      "email": "candidate_124272@test.com",
+      "jobTitle": "Executive Chef & Kitchen Lead",
+      "jobRequirements": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "score": 12,
+      "matchedSkills": [],
+      "missingSkills": [
+        "Culinary Arts",
+        "Menu Engineering",
+        "HACCP",
+        "Food Safety"
+      ],
+      "reason": "Potential match; could expand into Culinary Arts, Menu Engineering",
+      "createdAt": "2026-10-29T20:51:29.384Z"
+    }
+  ]
+}

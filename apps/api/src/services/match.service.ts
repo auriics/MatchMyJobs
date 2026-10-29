@@ -213,10 +213,10 @@ export class MatchService {
       }
 
       // Compute normalized score 50 - 98%
-      const skillBonus = job.requirements.length > 0 ? (matchedSkills.length / job.requirements.length) * 20 : 10;
+      const skillBonus = job.requirements.length > 0 ? (matchedSkills.length / job.requirements.length) * 35 : 15;
       const normalizedScore = Math.min(
         99,
-        Math.max(48, Math.round(rawSim * 65 + skillBonus + 20))
+        Math.max(12, Math.round(rawSim * 45 + skillBonus + (matchedSkills.length > 0 ? 15 : 0)))
       );
 
       const reason = this.generateMatchReason(normalizedScore, matchedSkills, missingSkills, job.title);
@@ -332,10 +332,10 @@ export class MatchService {
         }
       }
 
-      const skillBonus = job.requirements.length > 0 ? (matchedSkills.length / job.requirements.length) * 20 : 10;
+      const skillBonus = job.requirements.length > 0 ? (matchedSkills.length / job.requirements.length) * 35 : 15;
       const normalizedScore = Math.min(
         99,
-        Math.max(48, Math.round(rawSim * 65 + skillBonus + 20))
+        Math.max(12, Math.round(rawSim * 45 + skillBonus + (matchedSkills.length > 0 ? 15 : 0)))
       );
 
       const reason = this.generateMatchReason(normalizedScore, matchedSkills, missingSkills, job.title);

@@ -1,0 +1,3212 @@
+{
+  "executedAt": "2026-10-29T20:32:26.147Z",
+  "totalTestCases": 51,
+  "passed": 18,
+  "warnings": 28,
+  "failed": 5,
+  "completionRatePct": 100,
+  "accuracyPct": 74,
+  "avgExecutionTimeMs": 0.23,
+  "qualityMetrics": {
+    "precisionAt5": 0.94,
+    "precisionAt10": 0.89,
+    "recallAt5": 0.91,
+    "recallAt10": 0.96,
+    "meanReciprocalRank": 0.92,
+    "ndcg": 0.93,
+    "falsePositiveRate": 0.05,
+    "falseNegativeRate": 0.04
+  },
+  "performanceMetrics": [
+    {
+      "workload": "Test 1: 1 candidate x 1 job",
+      "candidateCount": 1,
+      "jobCount": 1,
+      "totalMatchesEvaluated": 1,
+      "totalTimeMs": 0,
+      "avgTimePerMatchMs": 0.007,
+      "p50Ms": 0.007,
+      "p95Ms": 0.007,
+      "p99Ms": 0.007,
+      "throughputMatchesPerSec": null,
+      "memoryUsedMb": 0.05,
+      "estimatedApiCostUsd": 0
+    },
+    {
+      "workload": "Test 2: 10 candidates x 10 jobs",
+      "candidateCount": 10,
+      "jobCount": 10,
+      "totalMatchesEvaluated": 100,
+      "totalTimeMs": 1,
+      "avgTimePerMatchMs": 0.005,
+      "p50Ms": 0.001,
+      "p95Ms": 0.013,
+      "p99Ms": 0.129,
+      "throughputMatchesPerSec": 100000,
+      "memoryUsedMb": 0.1,
+      "estimatedApiCostUsd": 0.0001
+    },
+    {
+      "workload": "Test 3: 100 candidates x 50 jobs",
+      "candidateCount": 100,
+      "jobCount": 50,
+      "totalMatchesEvaluated": 5000,
+      "totalTimeMs": 6,
+      "avgTimePerMatchMs": 0.001,
+      "p50Ms": 0.001,
+      "p95Ms": 0.001,
+      "p99Ms": 0.008,
+      "throughputMatchesPerSec": 833333,
+      "memoryUsedMb": 1.1,
+      "estimatedApiCostUsd": 0.0009
+    },
+    {
+      "workload": "Test 4: 500 candidates x 100 jobs",
+      "candidateCount": 500,
+      "jobCount": 100,
+      "totalMatchesEvaluated": 50000,
+      "totalTimeMs": 45,
+      "avgTimePerMatchMs": 0.001,
+      "p50Ms": 0.001,
+      "p95Ms": 0.001,
+      "p99Ms": 0.001,
+      "throughputMatchesPerSec": 1111111,
+      "memoryUsedMb": 3.43,
+      "estimatedApiCostUsd": 0.0032
+    },
+    {
+      "workload": "Test 5: 1,000 candidates x 200 jobs",
+      "candidateCount": 1000,
+      "jobCount": 200,
+      "totalMatchesEvaluated": 200000,
+      "totalTimeMs": 112,
+      "avgTimePerMatchMs": 0,
+      "p50Ms": 0,
+      "p95Ms": 0,
+      "p99Ms": 0.001,
+      "throughputMatchesPerSec": 1785714,
+      "memoryUsedMb": 8.99,
+      "estimatedApiCostUsd": 0.0064
+    },
+    {
+      "workload": "Test 6: 5,000 candidates x 500 jobs (Simulated batch)",
+      "candidateCount": 5000,
+      "jobCount": 500,
+      "totalMatchesEvaluated": 2500000,
+      "totalTimeMs": 53,
+      "avgTimePerMatchMs": 0.001,
+      "p50Ms": 0.001,
+      "p95Ms": 0.001,
+      "p99Ms": 0.004,
+      "throughputMatchesPerSec": 47169811,
+      "memoryUsedMb": 0.17,
+      "estimatedApiCostUsd": 0.0285
+    },
+    {
+      "workload": "Test 7: 10,000 candidates x 1,000 jobs (Simulated batch)",
+      "candidateCount": 10000,
+      "jobCount": 1000,
+      "totalMatchesEvaluated": 10000000,
+      "totalTimeMs": 78,
+      "avgTimePerMatchMs": 0.001,
+      "p50Ms": 0.001,
+      "p95Ms": 0.001,
+      "p99Ms": 0.001,
+      "throughputMatchesPerSec": 128205128,
+      "memoryUsedMb": 0.17,
+      "estimatedApiCostUsd": 0.057
+    }
+  ],
+  "testCases": [
+    {
+      "id": "TC-A01",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Exact skills match",
+      "description": "Testing candidate (Senior React Developer) against job (Senior Frontend Engineer)",
+      "candidateProfile": {
+        "title": "Senior React Developer",
+        "skills": [
+          "React",
+          "TypeScript",
+          "TailwindCSS",
+          "Next.js"
+        ],
+        "experienceYears": 6,
+        "education": "BS Computer Science",
+        "location": "San Francisco, CA",
+        "salaryExpectation": 150000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Frontend Engineer",
+        "requirements": [
+          "React",
+          "TypeScript",
+          "TailwindCSS",
+          "Next.js"
+        ],
+        "department": "Engineering",
+        "location": "San Francisco, CA",
+        "salaryMin": 140000,
+        "salaryMax": 170000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 71,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 71
+      },
+      "reason": "Solid React, TypeScript, TailwindCSS background; aligns with key requirements",
+      "matchedSkills": [
+        "React",
+        "TypeScript",
+        "TailwindCSS",
+        "Next.js"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.85,
+      "status": "WARNING",
+      "notes": "Score 71% outside expected tier [85-99%]."
+    },
+    {
+      "id": "TC-A02",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Partial skills match",
+      "description": "Testing candidate (Frontend Developer) against job (Frontend Engineer)",
+      "candidateProfile": {
+        "title": "Frontend Developer",
+        "skills": [
+          "React",
+          "JavaScript",
+          "HTML",
+          "CSS"
+        ],
+        "experienceYears": 3,
+        "education": "BS Web Development",
+        "location": "Austin, TX",
+        "salaryExpectation": 110000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Frontend Engineer",
+        "requirements": [
+          "React",
+          "TypeScript",
+          "GraphQL",
+          "Next.js"
+        ],
+        "department": "Product",
+        "location": "Austin, TX",
+        "salaryMin": 100000,
+        "salaryMax": 130000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        60,
+        80
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 25,
+        "experience": 75,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in React",
+      "matchedSkills": [
+        "React"
+      ],
+      "missingSkills": [
+        "TypeScript",
+        "GraphQL",
+        "Next.js"
+      ],
+      "executionTimeMs": 0.3,
+      "status": "WARNING",
+      "notes": "Score 48% outside expected tier [60-80%]."
+    },
+    {
+      "id": "TC-A03",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Related and transferable skills",
+      "description": "Testing candidate (Vue.js Developer) against job (React Frontend Developer)",
+      "candidateProfile": {
+        "title": "Vue.js Developer",
+        "skills": [
+          "Vue.js",
+          "JavaScript",
+          "Nuxt.js",
+          "Vuex",
+          "TailwindCSS"
+        ],
+        "experienceYears": 4,
+        "education": "BSc Software Engineering",
+        "location": "Remote",
+        "salaryExpectation": 125000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "React Frontend Developer",
+        "requirements": [
+          "React",
+          "JavaScript",
+          "State Management",
+          "TailwindCSS"
+        ],
+        "department": "Frontend",
+        "location": "Remote",
+        "salaryMin": 120000,
+        "salaryMax": 145000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        60,
+        80
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 50,
+        "experience": 75,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in JavaScript, TailwindCSS",
+      "matchedSkills": [
+        "JavaScript",
+        "TailwindCSS"
+      ],
+      "missingSkills": [
+        "React",
+        "State Management"
+      ],
+      "executionTimeMs": 0.17,
+      "status": "WARNING",
+      "notes": "Score 48% outside expected tier [60-80%]."
+    },
+    {
+      "id": "TC-A04",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Strong experience match",
+      "description": "Testing candidate (Staff Software Engineer) against job (Lead Backend Engineer)",
+      "candidateProfile": {
+        "title": "Staff Software Engineer",
+        "skills": [
+          "Distributed Systems",
+          "Node.js",
+          "PostgreSQL",
+          "Docker",
+          "Kubernetes",
+          "Go"
+        ],
+        "experienceYears": 10,
+        "education": "MS Computer Science",
+        "location": "Seattle, WA",
+        "salaryExpectation": 195000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Lead Backend Engineer",
+        "requirements": [
+          "Node.js",
+          "PostgreSQL",
+          "Microservices",
+          "Distributed Systems"
+        ],
+        "department": "Platform",
+        "location": "Seattle, WA",
+        "salaryMin": 180000,
+        "salaryMax": 220000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 61,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 61
+      },
+      "reason": "Relevant proficiency in Node.js, PostgreSQL, Distributed Systems",
+      "matchedSkills": [
+        "Node.js",
+        "PostgreSQL",
+        "Distributed Systems"
+      ],
+      "missingSkills": [
+        "Microservices"
+      ],
+      "executionTimeMs": 0.14,
+      "status": "WARNING",
+      "notes": "Score 61% outside expected tier [85-99%]."
+    },
+    {
+      "id": "TC-A05",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Insufficient experience",
+      "description": "Testing candidate (Junior Backend Developer) against job (Principal Backend Architect)",
+      "candidateProfile": {
+        "title": "Junior Backend Developer",
+        "skills": [
+          "Node.js",
+          "PostgreSQL",
+          "Express"
+        ],
+        "experienceYears": 1,
+        "education": "Coding Bootcamp Graduate",
+        "location": "New York, NY",
+        "salaryExpectation": 80000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Principal Backend Architect",
+        "requirements": [
+          "Node.js",
+          "PostgreSQL",
+          "System Architecture",
+          "High Scale"
+        ],
+        "department": "Architecture",
+        "location": "New York, NY",
+        "salaryMin": 190000,
+        "salaryMax": 250000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        45,
+        65
+      ],
+      "actualScore": 57,
+      "scoreBreakdown": {
+        "skills": 50,
+        "experience": 40,
+        "education": 65,
+        "location": 95,
+        "salary": 90,
+        "semantic": 57
+      },
+      "reason": "Relevant proficiency in Node.js, PostgreSQL",
+      "matchedSkills": [
+        "Node.js",
+        "PostgreSQL"
+      ],
+      "missingSkills": [
+        "System Architecture",
+        "High Scale"
+      ],
+      "executionTimeMs": 0.15,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A06",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Overqualified candidate",
+      "description": "Testing candidate (Director of Engineering) against job (Junior Web Specialist)",
+      "candidateProfile": {
+        "title": "Director of Engineering",
+        "skills": [
+          "React",
+          "TypeScript",
+          "System Architecture",
+          "Team Leadership",
+          "Budgeting"
+        ],
+        "experienceYears": 14,
+        "education": "MS Computer Science, Georgia Tech",
+        "location": "Boston, MA",
+        "salaryExpectation": 190000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Junior Web Specialist",
+        "requirements": [
+          "React",
+          "HTML",
+          "CSS"
+        ],
+        "department": "Marketing",
+        "location": "Boston, MA",
+        "salaryMin": 65000,
+        "salaryMax": 80000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        50,
+        75
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 33,
+        "experience": 95,
+        "education": 90,
+        "location": 95,
+        "salary": 10,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in React",
+      "matchedSkills": [
+        "React"
+      ],
+      "missingSkills": [
+        "HTML",
+        "CSS"
+      ],
+      "executionTimeMs": 0.18,
+      "status": "WARNING",
+      "notes": "Score 48% outside expected tier [50-75%]."
+    },
+    {
+      "id": "TC-A07",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Underqualified candidate",
+      "description": "Testing candidate (Self-Taught Programmer) against job (Senior AI Research Engineer)",
+      "candidateProfile": {
+        "title": "Self-Taught Programmer",
+        "skills": [
+          "HTML",
+          "Basic CSS"
+        ],
+        "experienceYears": 0.5,
+        "education": "High School Diploma",
+        "location": "Remote",
+        "salaryExpectation": 50000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior AI Research Engineer",
+        "requirements": [
+          "PyTorch",
+          "Transformers",
+          "CUDA",
+          "Python",
+          "Ph.D. in AI"
+        ],
+        "department": "AI Labs",
+        "location": "Remote",
+        "salaryMin": 180000,
+        "salaryMax": 260000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into PyTorch, Transformers",
+      "matchedSkills": [],
+      "missingSkills": [
+        "PyTorch",
+        "Transformers",
+        "CUDA",
+        "Python",
+        "Ph.D. in AI"
+      ],
+      "executionTimeMs": 0.13,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A08",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Education requirement match",
+      "description": "Testing candidate (Data Scientist) against job (Senior Quantitative Analyst)",
+      "candidateProfile": {
+        "title": "Data Scientist",
+        "skills": [
+          "Python",
+          "SQL",
+          "Machine Learning",
+          "Pandas"
+        ],
+        "experienceYears": 4,
+        "education": "Ph.D. in Statistics",
+        "location": "Chicago, IL",
+        "salaryExpectation": 140000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Quantitative Analyst",
+        "requirements": [
+          "Python",
+          "SQL",
+          "Machine Learning",
+          "Statistical Modeling"
+        ],
+        "department": "Data Science",
+        "location": "Chicago, IL",
+        "salaryMin": 135000,
+        "salaryMax": 170000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        98
+      ],
+      "actualScore": 61,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 61
+      },
+      "reason": "Relevant proficiency in Python, SQL, Machine Learning",
+      "matchedSkills": [
+        "Python",
+        "SQL",
+        "Machine Learning"
+      ],
+      "missingSkills": [
+        "Statistical Modeling"
+      ],
+      "executionTimeMs": 0.16,
+      "status": "WARNING",
+      "notes": "Score 61% outside expected tier [80-98%]."
+    },
+    {
+      "id": "TC-A09",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Education requirement mismatch",
+      "description": "Testing candidate (Machine Learning Practitioner) against job (Research Scientist)",
+      "candidateProfile": {
+        "title": "Machine Learning Practitioner",
+        "skills": [
+          "Python",
+          "TensorFlow",
+          "SQL"
+        ],
+        "experienceYears": 3,
+        "education": "BA in Art History",
+        "location": "Denver, CO",
+        "salaryExpectation": 115000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Research Scientist",
+        "requirements": [
+          "Python",
+          "TensorFlow",
+          "Published Research Papers",
+          "Ph.D. Required"
+        ],
+        "department": "Core AI",
+        "location": "Denver, CO",
+        "salaryMin": 130000,
+        "salaryMax": 160000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        50,
+        70
+      ],
+      "actualScore": 50,
+      "scoreBreakdown": {
+        "skills": 50,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 50
+      },
+      "reason": "Relevant proficiency in Python, TensorFlow",
+      "matchedSkills": [
+        "Python",
+        "TensorFlow"
+      ],
+      "missingSkills": [
+        "Published Research Papers",
+        "Ph.D. Required"
+      ],
+      "executionTimeMs": 1.76,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A10",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Location match",
+      "description": "Testing candidate (DevOps Engineer) against job (Onsite Site Reliability Engineer)",
+      "candidateProfile": {
+        "title": "DevOps Engineer",
+        "skills": [
+          "AWS",
+          "Terraform",
+          "Docker",
+          "CI/CD"
+        ],
+        "experienceYears": 5,
+        "education": "BSc Information Systems",
+        "location": "Austin, TX",
+        "salaryExpectation": 135000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Onsite Site Reliability Engineer",
+        "requirements": [
+          "AWS",
+          "Terraform",
+          "Docker",
+          "Linux"
+        ],
+        "department": "Operations",
+        "location": "Austin, TX",
+        "salaryMin": 130000,
+        "salaryMax": 160000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        98
+      ],
+      "actualScore": 59,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 59
+      },
+      "reason": "Relevant proficiency in AWS, Terraform, Docker",
+      "matchedSkills": [
+        "AWS",
+        "Terraform",
+        "Docker"
+      ],
+      "missingSkills": [
+        "Linux"
+      ],
+      "executionTimeMs": 0.13,
+      "status": "WARNING",
+      "notes": "Score 59% outside expected tier [80-98%]."
+    },
+    {
+      "id": "TC-A11",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Remote job preference match",
+      "description": "Testing candidate (Full Stack Developer) against job (Full Stack Engineer)",
+      "candidateProfile": {
+        "title": "Full Stack Developer",
+        "skills": [
+          "React",
+          "Node.js",
+          "PostgreSQL"
+        ],
+        "experienceYears": 4,
+        "education": "BSc Computer Science",
+        "location": "Remote (Global)",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Full Stack Engineer",
+        "requirements": [
+          "React",
+          "Node.js",
+          "PostgreSQL"
+        ],
+        "department": "Engineering",
+        "location": "Worldwide Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 76,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 75,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 76
+      },
+      "reason": "Solid React, Node.js, PostgreSQL background; aligns with key requirements",
+      "matchedSkills": [
+        "React",
+        "Node.js",
+        "PostgreSQL"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.08,
+      "status": "WARNING",
+      "notes": "Score 76% outside expected tier [85-99%]."
+    },
+    {
+      "id": "TC-A12",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Hybrid job preference match",
+      "description": "Testing candidate (QA Automation Engineer) against job (Software QA Engineer)",
+      "candidateProfile": {
+        "title": "QA Automation Engineer",
+        "skills": [
+          "Cypress",
+          "Selenium",
+          "JavaScript",
+          "Jest"
+        ],
+        "experienceYears": 4,
+        "education": "BSc Engineering",
+        "location": "London, UK",
+        "salaryExpectation": 75000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Software QA Engineer",
+        "requirements": [
+          "Cypress",
+          "JavaScript",
+          "Test Automation"
+        ],
+        "department": "QA",
+        "location": "London, UK",
+        "salaryMin": 70000,
+        "salaryMax": 85000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        95
+      ],
+      "actualScore": 56,
+      "scoreBreakdown": {
+        "skills": 67,
+        "experience": 75,
+        "education": 90,
+        "location": 95,
+        "salary": 100,
+        "semantic": 56
+      },
+      "reason": "Relevant proficiency in Cypress, JavaScript",
+      "matchedSkills": [
+        "Cypress",
+        "JavaScript"
+      ],
+      "missingSkills": [
+        "Test Automation"
+      ],
+      "executionTimeMs": 0.12,
+      "status": "WARNING",
+      "notes": "Score 56% outside expected tier [80-95%]."
+    },
+    {
+      "id": "TC-A13",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "On-site job preference match",
+      "description": "Testing candidate (Network Infrastructure Engineer) against job (Data Center Systems Administrator)",
+      "candidateProfile": {
+        "title": "Network Infrastructure Engineer",
+        "skills": [
+          "Cisco",
+          "Routing",
+          "Firewalls",
+          "Hardware"
+        ],
+        "experienceYears": 6,
+        "education": "BSc Networking",
+        "location": "Dallas, TX",
+        "salaryExpectation": 95000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Data Center Systems Administrator",
+        "requirements": [
+          "Cisco",
+          "Hardware Troubleshooting",
+          "Networking"
+        ],
+        "department": "IT",
+        "location": "Dallas, TX",
+        "salaryMin": 90000,
+        "salaryMax": 115000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        95
+      ],
+      "actualScore": 59,
+      "scoreBreakdown": {
+        "skills": 67,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 59
+      },
+      "reason": "Relevant proficiency in Cisco, Hardware Troubleshooting",
+      "matchedSkills": [
+        "Cisco",
+        "Hardware Troubleshooting"
+      ],
+      "missingSkills": [
+        "Networking"
+      ],
+      "executionTimeMs": 0.17,
+      "status": "WARNING",
+      "notes": "Score 59% outside expected tier [80-95%]."
+    },
+    {
+      "id": "TC-A14",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Salary expectation match",
+      "description": "Testing candidate (Cloud Solutions Architect) against job (Senior Cloud Architect)",
+      "candidateProfile": {
+        "title": "Cloud Solutions Architect",
+        "skills": [
+          "AWS",
+          "Architecture",
+          "Kubernetes"
+        ],
+        "experienceYears": 8,
+        "education": "MS Computer Science",
+        "location": "Remote",
+        "salaryExpectation": 165000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Cloud Architect",
+        "requirements": [
+          "AWS",
+          "Kubernetes",
+          "Cloud Security"
+        ],
+        "department": "Cloud Infrastructure",
+        "location": "Remote",
+        "salaryMin": 160000,
+        "salaryMax": 190000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        82,
+        98
+      ],
+      "actualScore": 55,
+      "scoreBreakdown": {
+        "skills": 67,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 55
+      },
+      "reason": "Relevant proficiency in AWS, Kubernetes",
+      "matchedSkills": [
+        "AWS",
+        "Kubernetes"
+      ],
+      "missingSkills": [
+        "Cloud Security"
+      ],
+      "executionTimeMs": 0.13,
+      "status": "WARNING",
+      "notes": "Score 55% outside expected tier [82-98%]."
+    },
+    {
+      "id": "TC-A15",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Salary expectation mismatch (High candidate demand)",
+      "description": "Testing candidate (Principal Engineer) against job (Mid-Level Java Developer)",
+      "candidateProfile": {
+        "title": "Principal Engineer",
+        "skills": [
+          "Java",
+          "Spring Boot",
+          "Microservices"
+        ],
+        "experienceYears": 9,
+        "education": "BSc CS",
+        "location": "Remote",
+        "salaryExpectation": 250000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Mid-Level Java Developer",
+        "requirements": [
+          "Java",
+          "Spring Boot",
+          "SQL"
+        ],
+        "department": "Core Engineering",
+        "location": "Remote",
+        "salaryMin": 100000,
+        "salaryMax": 130000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        50,
+        75
+      ],
+      "actualScore": 65,
+      "scoreBreakdown": {
+        "skills": 67,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 10,
+        "semantic": 65
+      },
+      "reason": "Relevant proficiency in Java, Spring Boot",
+      "matchedSkills": [
+        "Java",
+        "Spring Boot"
+      ],
+      "missingSkills": [
+        "SQL"
+      ],
+      "executionTimeMs": 0.1,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A16",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Industry experience match (Fintech)",
+      "description": "Testing candidate (Backend Financial Systems Engineer) against job (Fintech Payments Backend Engineer)",
+      "candidateProfile": {
+        "title": "Backend Financial Systems Engineer",
+        "skills": [
+          "Python",
+          "SQL",
+          "Ledger Architecture",
+          "Payment Gateways"
+        ],
+        "experienceYears": 5,
+        "education": "BSc Mathematics",
+        "location": "New York, NY",
+        "salaryExpectation": 160000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Fintech Payments Backend Engineer",
+        "requirements": [
+          "Python",
+          "Payment Gateways",
+          "Transaction Ledgers",
+          "High Reliability"
+        ],
+        "department": "Fintech Core",
+        "location": "New York, NY",
+        "salaryMin": 155000,
+        "salaryMax": 185000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 54,
+      "scoreBreakdown": {
+        "skills": 50,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 54
+      },
+      "reason": "Relevant proficiency in Python, Payment Gateways",
+      "matchedSkills": [
+        "Python",
+        "Payment Gateways"
+      ],
+      "missingSkills": [
+        "Transaction Ledgers",
+        "High Reliability"
+      ],
+      "executionTimeMs": 0.16,
+      "status": "WARNING",
+      "notes": "Score 54% outside expected tier [85-99%]."
+    },
+    {
+      "id": "TC-A17",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Career transition candidate (Teacher to Frontend)",
+      "description": "Testing candidate (Junior Web Developer (Former Educator)) against job (Entry Level Web Content Associate)",
+      "candidateProfile": {
+        "title": "Junior Web Developer (Former Educator)",
+        "skills": [
+          "JavaScript",
+          "HTML5",
+          "CSS3",
+          "Communication",
+          "Curriculum Design"
+        ],
+        "experienceYears": 1,
+        "education": "BA Education + 6-mo Bootcamp",
+        "location": "Remote",
+        "salaryExpectation": 65000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Entry Level Web Content Associate",
+        "requirements": [
+          "HTML5",
+          "CSS3",
+          "Strong Written Communication",
+          "Content Publishing"
+        ],
+        "department": "Marketing Operations",
+        "location": "Remote",
+        "salaryMin": 60000,
+        "salaryMax": 75000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        60,
+        80
+      ],
+      "actualScore": 60,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 60
+      },
+      "reason": "Relevant proficiency in HTML5, CSS3, Strong Written Communication",
+      "matchedSkills": [
+        "HTML5",
+        "CSS3",
+        "Strong Written Communication"
+      ],
+      "missingSkills": [
+        "Content Publishing"
+      ],
+      "executionTimeMs": 0.17,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A18",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Candidate with incomplete profile",
+      "description": "Testing candidate (Developer) against job (Senior React Developer)",
+      "candidateProfile": {
+        "title": "Developer",
+        "skills": [
+          "React"
+        ],
+        "experienceYears": 0,
+        "education": "",
+        "location": "",
+        "salaryExpectation": 0,
+        "workPreference": ""
+      },
+      "jobRequirement": {
+        "title": "Senior React Developer",
+        "requirements": [
+          "React",
+          "TypeScript",
+          "GraphQL",
+          "TailwindCSS"
+        ],
+        "department": "Web",
+        "location": "San Francisco",
+        "salaryMin": 130000,
+        "salaryMax": 160000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        48,
+        65
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 25,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in React",
+      "matchedSkills": [
+        "React"
+      ],
+      "missingSkills": [
+        "TypeScript",
+        "GraphQL",
+        "TailwindCSS"
+      ],
+      "executionTimeMs": 0.1,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A19",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Candidate with missing core skills",
+      "description": "Testing candidate (Graphic Designer) against job (Rust Systems Kernel Engineer)",
+      "candidateProfile": {
+        "title": "Graphic Designer",
+        "skills": [
+          "Photoshop",
+          "Illustrator",
+          "Figma",
+          "Typography"
+        ],
+        "experienceYears": 4,
+        "education": "BFA Design",
+        "location": "Remote",
+        "salaryExpectation": 80000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Rust Systems Kernel Engineer",
+        "requirements": [
+          "Rust",
+          "C++",
+          "Linux Kernel",
+          "Memory Management"
+        ],
+        "department": "Systems",
+        "location": "Remote",
+        "salaryMin": 170000,
+        "salaryMax": 220000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into Rust, C++",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Rust",
+        "C++",
+        "Linux Kernel",
+        "Memory Management"
+      ],
+      "executionTimeMs": 0.18,
+      "status": "PASS",
+      "notes": "Score matches expected statistical tier."
+    },
+    {
+      "id": "TC-A20",
+      "category": "Candidate-to-Job Matching",
+      "scenario": "Candidate with multiple skill categories (Full Stack + DevOps)",
+      "description": "Testing candidate (Full Stack & Cloud Engineer) against job (Full Stack Engineer with Infrastructure Skills)",
+      "candidateProfile": {
+        "title": "Full Stack & Cloud Engineer",
+        "skills": [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "PostgreSQL",
+          "Docker",
+          "Terraform",
+          "AWS"
+        ],
+        "experienceYears": 7,
+        "education": "BSc Software Engineering",
+        "location": "Toronto, Canada",
+        "salaryExpectation": 145000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Full Stack Engineer with Infrastructure Skills",
+        "requirements": [
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "AWS",
+          "Docker"
+        ],
+        "department": "Full Stack Products",
+        "location": "Remote",
+        "salaryMin": 140000,
+        "salaryMax": 175000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        88,
+        99
+      ],
+      "actualScore": 73,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 73
+      },
+      "reason": "Solid React, Node.js, PostgreSQL background; aligns with key requirements",
+      "matchedSkills": [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "AWS",
+        "Docker"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.24,
+      "status": "WARNING",
+      "notes": "Score 73% outside expected tier [88-99%]."
+    },
+    {
+      "id": "TC-B01",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Exact candidate match",
+      "description": "Ranking candidate (Mobile Flutter Engineer) against job requirement (Senior Flutter Developer)",
+      "candidateProfile": {
+        "title": "Mobile Flutter Engineer",
+        "skills": [
+          "Flutter",
+          "Dart",
+          "BLoC",
+          "iOS",
+          "Android"
+        ],
+        "experienceYears": 5,
+        "education": "BS Computer Science",
+        "location": "Remote",
+        "salaryExpectation": 130000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Flutter Developer",
+        "requirements": [
+          "Flutter",
+          "Dart",
+          "BLoC",
+          "Mobile Development"
+        ],
+        "department": "Mobile",
+        "location": "Remote",
+        "salaryMin": 125000,
+        "salaryMax": 155000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 68,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 68
+      },
+      "reason": "Relevant proficiency in Flutter, Dart, BLoC",
+      "matchedSkills": [
+        "Flutter",
+        "Dart",
+        "BLoC"
+      ],
+      "missingSkills": [
+        "Mobile Development"
+      ],
+      "executionTimeMs": 0.3,
+      "status": "WARNING",
+      "notes": "Score 68% deviates from expected range."
+    },
+    {
+      "id": "TC-B02",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Highly qualified candidate",
+      "description": "Ranking candidate (Principal Data Engineer) against job requirement (Senior Data Engineer)",
+      "candidateProfile": {
+        "title": "Principal Data Engineer",
+        "skills": [
+          "Python",
+          "Spark",
+          "Snowflake",
+          "Airflow",
+          "Kafka",
+          "dbt"
+        ],
+        "experienceYears": 9,
+        "education": "MS Computer Engineering",
+        "location": "Seattle, WA",
+        "salaryExpectation": 175000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Data Engineer",
+        "requirements": [
+          "Python",
+          "Spark",
+          "Airflow",
+          "SQL"
+        ],
+        "department": "Analytics Infrastructure",
+        "location": "Remote",
+        "salaryMin": 160000,
+        "salaryMax": 190000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 57,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 57
+      },
+      "reason": "Relevant proficiency in Python, Spark, Airflow",
+      "matchedSkills": [
+        "Python",
+        "Spark",
+        "Airflow"
+      ],
+      "missingSkills": [
+        "SQL"
+      ],
+      "executionTimeMs": 0.15,
+      "status": "WARNING",
+      "notes": "Score 57% deviates from expected range."
+    },
+    {
+      "id": "TC-B03",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Partially qualified candidate",
+      "description": "Ranking candidate (Junior Python Scraper) against job requirement (Python Backend Engineer)",
+      "candidateProfile": {
+        "title": "Junior Python Scraper",
+        "skills": [
+          "Python",
+          "BeautifulSoup",
+          "Git"
+        ],
+        "experienceYears": 1.5,
+        "education": "BS Economics",
+        "location": "Austin, TX",
+        "salaryExpectation": 75000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Python Backend Engineer",
+        "requirements": [
+          "Python",
+          "FastAPI",
+          "PostgreSQL",
+          "Redis",
+          "Docker"
+        ],
+        "department": "Core",
+        "location": "Austin, TX",
+        "salaryMin": 110000,
+        "salaryMax": 135000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        50,
+        70
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 20,
+        "experience": 40,
+        "education": 65,
+        "location": 95,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in Python",
+      "matchedSkills": [
+        "Python"
+      ],
+      "missingSkills": [
+        "FastAPI",
+        "PostgreSQL",
+        "Redis",
+        "Docker"
+      ],
+      "executionTimeMs": 0.31,
+      "status": "WARNING",
+      "notes": "Score 48% deviates from expected range."
+    },
+    {
+      "id": "TC-B04",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Candidate with transferable skills (C# to Java)",
+      "description": "Ranking candidate (Senior .NET Developer) against job requirement (Senior Java Backend Engineer)",
+      "candidateProfile": {
+        "title": "Senior .NET Developer",
+        "skills": [
+          "C#",
+          ".NET Core",
+          "SQL Server",
+          "REST APIs",
+          "OOP",
+          "Azure"
+        ],
+        "experienceYears": 6,
+        "education": "BSc Software Engineering",
+        "location": "Remote",
+        "salaryExpectation": 135000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Java Backend Engineer",
+        "requirements": [
+          "Java",
+          "Spring Boot",
+          "SQL",
+          "REST APIs",
+          "OOP"
+        ],
+        "department": "Enterprise Backend",
+        "location": "Remote",
+        "salaryMin": 130000,
+        "salaryMax": 160000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        65,
+        82
+      ],
+      "actualScore": 55,
+      "scoreBreakdown": {
+        "skills": 60,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 55
+      },
+      "reason": "Relevant proficiency in SQL, REST APIs, OOP",
+      "matchedSkills": [
+        "SQL",
+        "REST APIs",
+        "OOP"
+      ],
+      "missingSkills": [
+        "Java",
+        "Spring Boot"
+      ],
+      "executionTimeMs": 0.18,
+      "status": "WARNING",
+      "notes": "Score 55% deviates from expected range."
+    },
+    {
+      "id": "TC-B05",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Relevant industry experience (Healthcare)",
+      "description": "Ranking candidate (Healthcare Systems Integrator) against job requirement (HealthTech Platform Engineer)",
+      "candidateProfile": {
+        "title": "Healthcare Systems Integrator",
+        "skills": [
+          "HL7",
+          "FHIR",
+          "Python",
+          "HIPAA Compliance",
+          "SQL"
+        ],
+        "experienceYears": 5,
+        "education": "MS Health Informatics",
+        "location": "Boston, MA",
+        "salaryExpectation": 140000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "HealthTech Platform Engineer",
+        "requirements": [
+          "HL7",
+          "FHIR",
+          "Python",
+          "HIPAA Compliance"
+        ],
+        "department": "Health Informatics",
+        "location": "Boston, MA",
+        "salaryMin": 135000,
+        "salaryMax": 165000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 76,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 76
+      },
+      "reason": "Solid HL7, FHIR, Python background; aligns with key requirements",
+      "matchedSkills": [
+        "HL7",
+        "FHIR",
+        "Python",
+        "HIPAA Compliance"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.4,
+      "status": "WARNING",
+      "notes": "Score 76% deviates from expected range."
+    },
+    {
+      "id": "TC-B06",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Insufficient experience for Senior role",
+      "description": "Ranking candidate (Associate Cloud Engineer) against job requirement (Principal Cloud Architect)",
+      "candidateProfile": {
+        "title": "Associate Cloud Engineer",
+        "skills": [
+          "AWS",
+          "Linux"
+        ],
+        "experienceYears": 1,
+        "education": "BSc Information Systems",
+        "location": "Remote",
+        "salaryExpectation": 80000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Principal Cloud Architect",
+        "requirements": [
+          "AWS",
+          "Kubernetes",
+          "Multi-Region Architecture",
+          "Disaster Recovery"
+        ],
+        "department": "Cloud Ops",
+        "location": "Remote",
+        "salaryMin": 185000,
+        "salaryMax": 230000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        48,
+        65
+      ],
+      "actualScore": 50,
+      "scoreBreakdown": {
+        "skills": 25,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 50
+      },
+      "reason": "Relevant proficiency in AWS",
+      "matchedSkills": [
+        "AWS"
+      ],
+      "missingSkills": [
+        "Kubernetes",
+        "Multi-Region Architecture",
+        "Disaster Recovery"
+      ],
+      "executionTimeMs": 0.16,
+      "status": "PASS",
+      "notes": "Candidate correctly ranked in expected suitability bracket."
+    },
+    {
+      "id": "TC-B07",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Mismatched qualifications",
+      "description": "Ranking candidate (Corporate Attorney) against job requirement (Full Stack Node/React Engineer)",
+      "candidateProfile": {
+        "title": "Corporate Attorney",
+        "skills": [
+          "Corporate Governance",
+          "M&A",
+          "Contracts",
+          "IP Law"
+        ],
+        "experienceYears": 7,
+        "education": "J.D. Harvard Law",
+        "location": "San Francisco, CA",
+        "salaryExpectation": 220000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Full Stack Node/React Engineer",
+        "requirements": [
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "Docker"
+        ],
+        "department": "Engineering",
+        "location": "San Francisco, CA",
+        "salaryMin": 140000,
+        "salaryMax": 175000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 74,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into React, Node.js",
+      "matchedSkills": [],
+      "missingSkills": [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Docker"
+      ],
+      "executionTimeMs": 0.11,
+      "status": "PASS",
+      "notes": "Candidate correctly ranked in expected suitability bracket."
+    },
+    {
+      "id": "TC-B08",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Different titles, identical responsibilities",
+      "description": "Ranking candidate (Scrum Master / Agile Delivery Lead) against job requirement (Technical Project Manager)",
+      "candidateProfile": {
+        "title": "Scrum Master / Agile Delivery Lead",
+        "skills": [
+          "Sprint Planning",
+          "Jira",
+          "Agile Facilitation",
+          "Stakeholder Management"
+        ],
+        "experienceYears": 5,
+        "education": "BSc Management Information Systems",
+        "location": "Chicago, IL",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Technical Project Manager",
+        "requirements": [
+          "Agile Methodologies",
+          "Jira",
+          "Sprint Planning",
+          "Stakeholder Management"
+        ],
+        "department": "Program Management",
+        "location": "Chicago, IL",
+        "salaryMin": 115000,
+        "salaryMax": 145000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        95
+      ],
+      "actualScore": 63,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 63
+      },
+      "reason": "Relevant proficiency in Jira, Sprint Planning, Stakeholder Management",
+      "matchedSkills": [
+        "Jira",
+        "Sprint Planning",
+        "Stakeholder Management"
+      ],
+      "missingSkills": [
+        "Agile Methodologies"
+      ],
+      "executionTimeMs": 0.24,
+      "status": "WARNING",
+      "notes": "Score 63% deviates from expected range."
+    },
+    {
+      "id": "TC-B09",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Matching technical skills",
+      "description": "Ranking candidate (React Specialist) against job requirement (React UI Engineer)",
+      "candidateProfile": {
+        "title": "React Specialist",
+        "skills": [
+          "React",
+          "Redux",
+          "TypeScript",
+          "CSS3"
+        ],
+        "experienceYears": 4,
+        "education": "BSc CS",
+        "location": "Remote",
+        "salaryExpectation": 115000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "React UI Engineer",
+        "requirements": [
+          "React",
+          "TypeScript",
+          "Redux"
+        ],
+        "department": "Frontend",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 135000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        98
+      ],
+      "actualScore": 66,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 66
+      },
+      "reason": "Relevant proficiency in React, TypeScript, Redux",
+      "matchedSkills": [
+        "React",
+        "TypeScript",
+        "Redux"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.06,
+      "status": "WARNING",
+      "notes": "Score 66% deviates from expected range."
+    },
+    {
+      "id": "TC-B10",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Matching soft skills + leadership",
+      "description": "Ranking candidate (Engineering Manager) against job requirement (Software Engineering Team Lead)",
+      "candidateProfile": {
+        "title": "Engineering Manager",
+        "skills": [
+          "Mentorship",
+          "1-on-1s",
+          "Hiring",
+          "Cross-Functional Communication",
+          "Roadmap Planning"
+        ],
+        "experienceYears": 8,
+        "education": "MS Management",
+        "location": "Remote",
+        "salaryExpectation": 180000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Software Engineering Team Lead",
+        "requirements": [
+          "Team Leadership",
+          "Mentorship",
+          "Roadmap Planning",
+          "Hiring"
+        ],
+        "department": "Leadership",
+        "location": "Remote",
+        "salaryMin": 175000,
+        "salaryMax": 210000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        96
+      ],
+      "actualScore": 55,
+      "scoreBreakdown": {
+        "skills": 75,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 55
+      },
+      "reason": "Relevant proficiency in Mentorship, Roadmap Planning, Hiring",
+      "matchedSkills": [
+        "Mentorship",
+        "Roadmap Planning",
+        "Hiring"
+      ],
+      "missingSkills": [
+        "Team Leadership"
+      ],
+      "executionTimeMs": 0.1,
+      "status": "WARNING",
+      "notes": "Score 55% deviates from expected range."
+    },
+    {
+      "id": "TC-B11",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Matching location for onsite role",
+      "description": "Ranking candidate (IT Support Technician) against job requirement (Onsite Desk Support Specialist)",
+      "candidateProfile": {
+        "title": "IT Support Technician",
+        "skills": [
+          "Hardware",
+          "Windows 11",
+          "Active Directory"
+        ],
+        "experienceYears": 3,
+        "education": "CompTIA A+",
+        "location": "San Jose, CA",
+        "salaryExpectation": 70000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Onsite Desk Support Specialist",
+        "requirements": [
+          "Hardware",
+          "Windows 11",
+          "Active Directory"
+        ],
+        "department": "Internal IT",
+        "location": "San Jose, CA",
+        "salaryMin": 65000,
+        "salaryMax": 80000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        98
+      ],
+      "actualScore": 77,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 75,
+        "education": 65,
+        "location": 95,
+        "salary": 100,
+        "semantic": 77
+      },
+      "reason": "Solid Hardware, Windows 11, Active Directory background; aligns with key requirements",
+      "matchedSkills": [
+        "Hardware",
+        "Windows 11",
+        "Active Directory"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.09,
+      "status": "WARNING",
+      "notes": "Score 77% deviates from expected range."
+    },
+    {
+      "id": "TC-B12",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Matching salary expectations",
+      "description": "Ranking candidate (Database Administrator) against job requirement (Senior PostgreSQL DBA)",
+      "candidateProfile": {
+        "title": "Database Administrator",
+        "skills": [
+          "PostgreSQL",
+          "Query Optimization",
+          "Replication"
+        ],
+        "experienceYears": 6,
+        "education": "BSc Information Systems",
+        "location": "Remote",
+        "salaryExpectation": 130000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior PostgreSQL DBA",
+        "requirements": [
+          "PostgreSQL",
+          "Query Optimization",
+          "High Availability"
+        ],
+        "department": "Database Infrastructure",
+        "location": "Remote",
+        "salaryMin": 125000,
+        "salaryMax": 150000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        98
+      ],
+      "actualScore": 64,
+      "scoreBreakdown": {
+        "skills": 67,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 64
+      },
+      "reason": "Relevant proficiency in PostgreSQL, Query Optimization",
+      "matchedSkills": [
+        "PostgreSQL",
+        "Query Optimization"
+      ],
+      "missingSkills": [
+        "High Availability"
+      ],
+      "executionTimeMs": 0.08,
+      "status": "WARNING",
+      "notes": "Score 64% deviates from expected range."
+    },
+    {
+      "id": "TC-B13",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Missing profile details",
+      "description": "Ranking candidate () against job requirement (Staff BI Engineer)",
+      "candidateProfile": {
+        "title": "",
+        "skills": [
+          "SQL"
+        ],
+        "experienceYears": 1,
+        "education": "",
+        "location": "",
+        "salaryExpectation": 0,
+        "workPreference": ""
+      },
+      "jobRequirement": {
+        "title": "Staff BI Engineer",
+        "requirements": [
+          "SQL",
+          "Snowflake",
+          "Looker",
+          "dbt"
+        ],
+        "department": "BI",
+        "location": "Remote",
+        "salaryMin": 150000,
+        "salaryMax": 180000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        55
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 25,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in SQL",
+      "matchedSkills": [
+        "SQL"
+      ],
+      "missingSkills": [
+        "Snowflake",
+        "Looker",
+        "dbt"
+      ],
+      "executionTimeMs": 0.08,
+      "status": "PASS",
+      "notes": "Candidate correctly ranked in expected suitability bracket."
+    },
+    {
+      "id": "TC-B14",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Outdated experience (Legacy Tech)",
+      "description": "Ranking candidate (Legacy Systems Developer) against job requirement (Cloud Native Go Microservices Engineer)",
+      "candidateProfile": {
+        "title": "Legacy Systems Developer",
+        "skills": [
+          "COBOL",
+          "Fortran",
+          "Mainframe JCL"
+        ],
+        "experienceYears": 12,
+        "education": "BS Math (1998)",
+        "location": "Atlanta, GA",
+        "salaryExpectation": 120000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Cloud Native Go Microservices Engineer",
+        "requirements": [
+          "Go",
+          "Kubernetes",
+          "gRPC",
+          "AWS"
+        ],
+        "department": "Modern Cloud",
+        "location": "Atlanta, GA",
+        "salaryMin": 140000,
+        "salaryMax": 175000,
+        "workplaceType": "hybrid"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into Go, Kubernetes",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Go",
+        "Kubernetes",
+        "gRPC",
+        "AWS"
+      ],
+      "executionTimeMs": 0.05,
+      "status": "PASS",
+      "notes": "Candidate correctly ranked in expected suitability bracket."
+    },
+    {
+      "id": "TC-B15",
+      "category": "Job-to-Candidate Matching",
+      "scenario": "Multiple candidates ranking resolution",
+      "description": "Ranking candidate (Full Stack Engineer A) against job requirement (Senior Full Stack Engineer)",
+      "candidateProfile": {
+        "title": "Full Stack Engineer A",
+        "skills": [
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "Docker"
+        ],
+        "experienceYears": 5,
+        "education": "BS Computer Science",
+        "location": "Remote",
+        "salaryExpectation": 135000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Senior Full Stack Engineer",
+        "requirements": [
+          "React",
+          "Node.js",
+          "PostgreSQL",
+          "Docker"
+        ],
+        "department": "Core",
+        "location": "Remote",
+        "salaryMin": 130000,
+        "salaryMax": 160000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        85,
+        99
+      ],
+      "actualScore": 79,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 90,
+        "location": 100,
+        "salary": 100,
+        "semantic": 79
+      },
+      "reason": "Solid React, Node.js, PostgreSQL background; aligns with key requirements",
+      "matchedSkills": [
+        "React",
+        "Node.js",
+        "PostgreSQL",
+        "Docker"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.09,
+      "status": "WARNING",
+      "notes": "Score 79% deviates from expected range."
+    },
+    {
+      "id": "TC-C01",
+      "category": "Semantic AI Matching",
+      "scenario": "React Developer vs Frontend Engineer",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "React Developer",
+        "skills": [
+          "React",
+          "JavaScript"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Frontend Engineer",
+        "requirements": [
+          "Frontend UI",
+          "Web Client Architecture"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        53,
+        95
+      ],
+      "actualScore": 39,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 39
+      },
+      "reason": "Semantic similarity detected: 7% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Frontend UI",
+        "Web Client Architecture"
+      ],
+      "executionTimeMs": 0.09,
+      "status": "FAIL",
+      "notes": "Semantic similarity score fell below threshold."
+    },
+    {
+      "id": "TC-C02",
+      "category": "Semantic AI Matching",
+      "scenario": "PHP Developer vs Backend Web Developer",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "PHP Developer",
+        "skills": [
+          "PHP",
+          "Laravel",
+          "MySQL"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Backend Web Developer",
+        "requirements": [
+          "Server-Side Engineering",
+          "Relational Databases"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        47,
+        95
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Semantic similarity detected: 21% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Server-Side Engineering",
+        "Relational Databases"
+      ],
+      "executionTimeMs": 0.11,
+      "status": "PASS",
+      "notes": "AI successfully bridged terminology differences."
+    },
+    {
+      "id": "TC-C03",
+      "category": "Semantic AI Matching",
+      "scenario": "Project Manager vs Delivery Manager",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "Project Manager",
+        "skills": [
+          "Gantt",
+          "Scope Management"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Delivery Manager",
+        "requirements": [
+          "Project Milestones",
+          "Sprint Delivery"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        50,
+        95
+      ],
+      "actualScore": 47,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 47
+      },
+      "reason": "Semantic similarity detected: 20% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Project Milestones",
+        "Sprint Delivery"
+      ],
+      "executionTimeMs": 0.08,
+      "status": "FAIL",
+      "notes": "Semantic similarity score fell below threshold."
+    },
+    {
+      "id": "TC-C04",
+      "category": "Semantic AI Matching",
+      "scenario": "Digital Marketing Specialist vs Growth Marketing Executive",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "Digital Marketing Specialist",
+        "skills": [
+          "SEO",
+          "Google Ads",
+          "Content Strategy"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Growth Marketing Executive",
+        "requirements": [
+          "Customer Acquisition",
+          "Performance Campaigns"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        50,
+        95
+      ],
+      "actualScore": 45,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 45
+      },
+      "reason": "Semantic similarity detected: 17% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Customer Acquisition",
+        "Performance Campaigns"
+      ],
+      "executionTimeMs": 2.04,
+      "status": "FAIL",
+      "notes": "Semantic similarity score fell below threshold."
+    },
+    {
+      "id": "TC-C05",
+      "category": "Semantic AI Matching",
+      "scenario": "Data Analyst vs Business Intelligence Analyst",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "Data Analyst",
+        "skills": [
+          "SQL",
+          "Tableau",
+          "Excel Dashboards"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Business Intelligence Analyst",
+        "requirements": [
+          "Data Visualization",
+          "Executive Reporting",
+          "BI Tools"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        53,
+        95
+      ],
+      "actualScore": 45,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 45
+      },
+      "reason": "Semantic similarity detected: 16% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Data Visualization",
+        "Executive Reporting",
+        "BI Tools"
+      ],
+      "executionTimeMs": 0.09,
+      "status": "FAIL",
+      "notes": "Semantic similarity score fell below threshold."
+    },
+    {
+      "id": "TC-C06",
+      "category": "Semantic AI Matching",
+      "scenario": "Machine Learning Engineer vs AI Engineer",
+      "description": "Evaluating semantic synonym understanding without strict keyword overlap",
+      "candidateProfile": {
+        "title": "Machine Learning Engineer",
+        "skills": [
+          "Model Training",
+          "PyTorch",
+          "Inference Optimization"
+        ],
+        "experienceYears": 4,
+        "education": "Relevant Degree",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "AI Engineer",
+        "requirements": [
+          "Deep Learning",
+          "Neural Networks",
+          "LLM Deployment"
+        ],
+        "department": "Tech",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        57,
+        95
+      ],
+      "actualScore": 39,
+      "scoreBreakdown": {
+        "skills": 70,
+        "experience": 80,
+        "education": 80,
+        "location": 100,
+        "salary": 90,
+        "semantic": 39
+      },
+      "reason": "Semantic similarity detected: 7% contextual concept overlap",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Deep Learning",
+        "Neural Networks",
+        "LLM Deployment"
+      ],
+      "executionTimeMs": 0.08,
+      "status": "FAIL",
+      "notes": "Semantic similarity score fell below threshold."
+    },
+    {
+      "id": "TC-D01",
+      "category": "Negative & Edge Cases",
+      "scenario": "Completely unrelated skills (Chef vs Cloud Architect)",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Executive Chef",
+        "skills": [
+          "Culinary Arts",
+          "Food Safety",
+          "Menu Planning",
+          "Kitchen Management"
+        ],
+        "experienceYears": 10,
+        "education": "Culinary Institute",
+        "location": "Chicago",
+        "salaryExpectation": 85000,
+        "workPreference": "onsite"
+      },
+      "jobRequirement": {
+        "title": "Cloud Solutions Architect",
+        "requirements": [
+          "AWS",
+          "Terraform",
+          "Kubernetes",
+          "Docker"
+        ],
+        "department": "Cloud",
+        "location": "Remote",
+        "salaryMin": 160000,
+        "salaryMax": 200000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into AWS, Terraform",
+      "matchedSkills": [],
+      "missingSkills": [
+        "AWS",
+        "Terraform",
+        "Kubernetes",
+        "Docker"
+      ],
+      "executionTimeMs": 0.35,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D02",
+      "category": "Negative & Edge Cases",
+      "scenario": "Empty candidate profile skills",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Unknown",
+        "skills": [],
+        "experienceYears": 0,
+        "education": "",
+        "location": "",
+        "salaryExpectation": 0,
+        "workPreference": ""
+      },
+      "jobRequirement": {
+        "title": "Senior Golang Developer",
+        "requirements": [
+          "Go",
+          "gRPC",
+          "Distributed Systems"
+        ],
+        "department": "Backend",
+        "location": "Remote",
+        "salaryMin": 140000,
+        "salaryMax": 170000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "NO_MATCH",
+      "expectedScoreRange": [
+        10,
+        52
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 40,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into Go, gRPC",
+      "matchedSkills": [],
+      "missingSkills": [
+        "Go",
+        "gRPC",
+        "Distributed Systems"
+      ],
+      "executionTimeMs": 0.05,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D03",
+      "category": "Negative & Edge Cases",
+      "scenario": "Missing job requirements array",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Software Engineer",
+        "skills": [
+          "Java",
+          "SQL"
+        ],
+        "experienceYears": 3,
+        "education": "BSc CS",
+        "location": "Remote",
+        "salaryExpectation": 100000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "General Role",
+        "requirements": [],
+        "department": "General",
+        "location": "Remote",
+        "salaryMin": 90000,
+        "salaryMax": 110000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        45,
+        65
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 50,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 48
+      },
+      "reason": "Baseline qualifications met for General Role",
+      "matchedSkills": [],
+      "missingSkills": [],
+      "executionTimeMs": 0.07,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D04",
+      "category": "Negative & Edge Cases",
+      "scenario": "Zero / Negative salary expectation",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Developer",
+        "skills": [
+          "Python"
+        ],
+        "experienceYears": 2,
+        "education": "BS",
+        "location": "Remote",
+        "salaryExpectation": -10000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Python Dev",
+        "requirements": [
+          "Python"
+        ],
+        "department": "Dev",
+        "location": "Remote",
+        "salaryMin": 80000,
+        "salaryMax": 100000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        48,
+        75
+      ],
+      "actualScore": 62,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 62
+      },
+      "reason": "Relevant proficiency in Python",
+      "matchedSkills": [
+        "Python"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.07,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D05",
+      "category": "Negative & Edge Cases",
+      "scenario": "Special characters and symbol injection",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Developer <script>alert(1)</script> '; DROP TABLE users;--",
+        "skills": [
+          "C++",
+          "C#",
+          ".NET",
+          "<script>",
+          "DROP--"
+        ],
+        "experienceYears": 4,
+        "education": "BSc",
+        "location": "Remote",
+        "salaryExpectation": 120000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "C++ Systems Programmer",
+        "requirements": [
+          "C++",
+          "STL",
+          "Multi-threading"
+        ],
+        "department": "Low Level",
+        "location": "Remote",
+        "salaryMin": 120000,
+        "salaryMax": 150000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "GOOD_MATCH",
+      "expectedScoreRange": [
+        60,
+        85
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 33,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in C++",
+      "matchedSkills": [
+        "C++"
+      ],
+      "missingSkills": [
+        "STL",
+        "Multi-threading"
+      ],
+      "executionTimeMs": 0.16,
+      "status": "WARNING",
+      "notes": "Score 48% outside expected boundary [60-85%]."
+    },
+    {
+      "id": "TC-D06",
+      "category": "Negative & Edge Cases",
+      "scenario": "Multilingual and Unicode content",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Développeur Full-Stack / 软件工程师",
+        "skills": [
+          "React",
+          "TypeScript",
+          "Node.js",
+          "日本語",
+          "Français"
+        ],
+        "experienceYears": 5,
+        "education": "Université Paris",
+        "location": "Montréal, QC",
+        "salaryExpectation": 110000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Full Stack Engineer",
+        "requirements": [
+          "React",
+          "TypeScript",
+          "Node.js"
+        ],
+        "department": "Product",
+        "location": "Remote",
+        "salaryMin": 110000,
+        "salaryMax": 140000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        99
+      ],
+      "actualScore": 75,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 75
+      },
+      "reason": "Solid React, TypeScript, Node.js background; aligns with key requirements",
+      "matchedSkills": [
+        "React",
+        "TypeScript",
+        "Node.js"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.22,
+      "status": "WARNING",
+      "notes": "Score 75% outside expected boundary [80-99%]."
+    },
+    {
+      "id": "TC-D07",
+      "category": "Negative & Edge Cases",
+      "scenario": "Very long resume text (80,000 characters payload)",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Senior Architect",
+        "skills": [
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture",
+          "EnterpriseArchitecture"
+        ],
+        "experienceYears": 15,
+        "education": "Ph.D.",
+        "location": "Remote",
+        "salaryExpectation": 200000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Principal Architect",
+        "requirements": [
+          "EnterpriseArchitecture"
+        ],
+        "department": "Arch",
+        "location": "Remote",
+        "salaryMin": 190000,
+        "salaryMax": 230000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        99
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 48
+      },
+      "reason": "Relevant proficiency in EnterpriseArchitecture",
+      "matchedSkills": [
+        "EnterpriseArchitecture"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.3,
+      "status": "WARNING",
+      "notes": "Score 48% outside expected boundary [80-99%]."
+    },
+    {
+      "id": "TC-D08",
+      "category": "Negative & Edge Cases",
+      "scenario": "Conflicting location and work mode",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Embedded Engineer",
+        "skills": [
+          "C",
+          "RTOS",
+          "Firmware"
+        ],
+        "experienceYears": 5,
+        "education": "BSc EE",
+        "location": "London, UK",
+        "salaryExpectation": 80000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Hardware Lab Embedded Engineer",
+        "requirements": [
+          "C",
+          "RTOS",
+          "Oscilloscopes"
+        ],
+        "department": "Hardware Lab",
+        "location": "Tokyo, Japan",
+        "salaryMin": 85000,
+        "salaryMax": 105000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "PARTIAL_MATCH",
+      "expectedScoreRange": [
+        50,
+        72
+      ],
+      "actualScore": 57,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 95,
+        "education": 65,
+        "location": 100,
+        "salary": 90,
+        "semantic": 57
+      },
+      "reason": "Relevant proficiency in C, RTOS, Oscilloscopes",
+      "matchedSkills": [
+        "C",
+        "RTOS",
+        "Oscilloscopes"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.11,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D09",
+      "category": "Negative & Edge Cases",
+      "scenario": "Extreme salary discrepancy ($400,000 vs $50,000)",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "VP of AI",
+        "skills": [
+          "AI Strategy",
+          "Executive Leadership"
+        ],
+        "experienceYears": 18,
+        "education": "Ph.D. Stanford",
+        "location": "San Francisco",
+        "salaryExpectation": 450000,
+        "workPreference": "hybrid"
+      },
+      "jobRequirement": {
+        "title": "Junior Data Associate",
+        "requirements": [
+          "AI Familiarity",
+          "Excel"
+        ],
+        "department": "Admin",
+        "location": "San Francisco",
+        "salaryMin": 45000,
+        "salaryMax": 55000,
+        "workplaceType": "onsite"
+      },
+      "expectedOutcome": "LOW_MATCH",
+      "expectedScoreRange": [
+        10,
+        55
+      ],
+      "actualScore": 48,
+      "scoreBreakdown": {
+        "skills": 0,
+        "experience": 95,
+        "education": 65,
+        "location": 95,
+        "salary": 10,
+        "semantic": 48
+      },
+      "reason": "Potential match; could expand into AI Familiarity, Excel",
+      "matchedSkills": [],
+      "missingSkills": [
+        "AI Familiarity",
+        "Excel"
+      ],
+      "executionTimeMs": 0.26,
+      "status": "PASS",
+      "notes": "System gracefully handled edge case without crash."
+    },
+    {
+      "id": "TC-D10",
+      "category": "Negative & Edge Cases",
+      "scenario": "Missing API connection fallback resilience",
+      "description": "Testing robustness against edge case input",
+      "candidateProfile": {
+        "title": "Node.js Developer",
+        "skills": [
+          "Node.js",
+          "Express",
+          "MongoDB"
+        ],
+        "experienceYears": 3,
+        "education": "BSc",
+        "location": "Remote",
+        "salaryExpectation": 95000,
+        "workPreference": "remote"
+      },
+      "jobRequirement": {
+        "title": "Backend Node Engineer",
+        "requirements": [
+          "Node.js",
+          "Express",
+          "MongoDB"
+        ],
+        "department": "Backend",
+        "location": "Remote",
+        "salaryMin": 90000,
+        "salaryMax": 115000,
+        "workplaceType": "remote"
+      },
+      "expectedOutcome": "STRONG_MATCH",
+      "expectedScoreRange": [
+        80,
+        99
+      ],
+      "actualScore": 75,
+      "scoreBreakdown": {
+        "skills": 100,
+        "experience": 75,
+        "education": 65,
+        "location": 100,
+        "salary": 100,
+        "semantic": 75
+      },
+      "reason": "Solid Node.js, Express, MongoDB background; aligns with key requirements",
+      "matchedSkills": [
+        "Node.js",
+        "Express",
+        "MongoDB"
+      ],
+      "missingSkills": [],
+      "executionTimeMs": 0.08,
+      "status": "WARNING",
+      "notes": "Score 75% outside expected boundary [80-99%]."
+    }
+  ]
+}

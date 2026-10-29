@@ -9,7 +9,9 @@ if (!fs.existsSync(config.uploadDir)) {
 
 export const isS3Configured = Boolean(
   config.aws.accessKeyId &&
+    !config.aws.accessKeyId.includes('your-aws') &&
     config.aws.secretAccessKey &&
+    !config.aws.secretAccessKey.includes('your-aws') &&
     config.aws.s3BucketName
 );
 

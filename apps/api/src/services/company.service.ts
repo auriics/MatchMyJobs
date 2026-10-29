@@ -18,6 +18,7 @@ export class CompanyService {
   // ==========================================
 
   static async getJobs(organizationId: string) {
+    if (!organizationId) return [];
     const jobs = await prisma.job.findMany({
       where: { organizationId },
       include: {
@@ -110,6 +111,7 @@ export class CompanyService {
   }
 
   static async getApplications(organizationId: string, jobId?: string, status?: string) {
+    if (!organizationId) return [];
     const where: any = {
       job: { organizationId },
     };
@@ -246,6 +248,7 @@ export class CompanyService {
   }
 
   static async getRecruiterStats(organizationId: string): Promise<RecruiterStatsDto> {
+    if (!organizationId) return { activeJobsCount: 0, totalApplicationsCount: 0, shortlistedCount: 0, interviewsScheduledCount: 0, offersMadeCount: 0 };
     const [
       activeJobsCount,
       totalApplicationsCount,
@@ -457,6 +460,7 @@ export class CompanyService {
   // ==========================================
 
   static async getCampaigns(organizationId: string) {
+    if (!organizationId) return [];
     const campaigns = await prisma.advertisingCampaign.findMany({
       where: { organizationId },
       include: {
@@ -587,6 +591,7 @@ export class CompanyService {
   // ==========================================
 
   static async getMembers(organizationId: string) {
+    if (!organizationId) return [];
     const members = await prisma.user.findMany({
       where: { organizationId },
       select: {
@@ -688,6 +693,7 @@ export class CompanyService {
   // ==========================================
 
   static async getCompanyProfile(organizationId: string) {
+    if (!organizationId) return null;
     const company = await prisma.company.findUnique({
       where: { id: organizationId },
       include: {

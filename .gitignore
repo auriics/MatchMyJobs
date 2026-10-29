@@ -79,3 +79,10 @@ apps/mobile/ios/Runner.xcodeproj/project.xcworkspace/xcuserdata/
 *.ipa
 *.dSYM.zip
 *.dSYM/
+
+# Local DB & Temp
+.pgdata/
+*/.pgdata/
+.agents/
+.claude/
+skills-lock.json

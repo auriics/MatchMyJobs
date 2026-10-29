@@ -11,7 +11,8 @@
     "prisma:generate": "prisma generate",
     "prisma:migrate": "prisma migrate dev",
     "prisma:db:push": "prisma db push",
-    "admin:provision": "tsx scripts/provision-admin.ts"
+    "admin:provision": "tsx scripts/provision-admin.ts",
+    "seed:demo": "tsx scripts/seed-demo-accounts.ts"
   },
   "dependencies": {
     "@antigravite/types": "workspace:*",

@@ -4,13 +4,13 @@
   "private": true,
   "description": "AntiGravite - AI-Powered Job Matching Platform (Phase 1)",
   "scripts": {
-    "build": "./node_modules/.bin/pnpm -r --filter=!./apps/mobile run build",
-    "dev:api": "./node_modules/.bin/pnpm --filter @antigravite/api dev",
-    "dev:web": "./node_modules/.bin/pnpm --filter @antigravite/web dev",
-    "build:types": "./node_modules/.bin/pnpm --filter @antigravite/types build",
-    "prisma:generate": "./node_modules/.bin/pnpm --filter @antigravite/api prisma:generate",
-    "prisma:migrate": "./node_modules/.bin/pnpm --filter @antigravite/api prisma:migrate",
-    "admin:provision": "./node_modules/.bin/pnpm --filter @antigravite/api admin:provision"
+    "build": "pnpm -r --filter=!./apps/mobile run build",
+    "dev:api": "pnpm --filter @antigravite/api dev",
+    "dev:web": "pnpm --filter @antigravite/web dev",
+    "build:types": "pnpm --filter @antigravite/types build",
+    "prisma:generate": "pnpm --filter @antigravite/api prisma:generate",
+    "prisma:migrate": "pnpm --filter @antigravite/api prisma:migrate",
+    "admin:provision": "pnpm --filter @antigravite/api admin:provision"
   },
   "devDependencies": {
     "pnpm": "^12.15.0",
