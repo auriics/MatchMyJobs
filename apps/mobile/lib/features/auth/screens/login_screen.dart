@@ -6,6 +6,7 @@ import '../../../core/theme/app_colors.dart';
 import '../../../shared/widgets/app_button.dart';
 import '../../../shared/widgets/app_text_field.dart';
 import '../../../shared/widgets/social_sign_in_buttons.dart';
+import '../../../shared/widgets/server_config_dialog.dart';
 import '../providers/auth_provider.dart';
 
 class LoginScreen extends ConsumerStatefulWidget {
@@ -81,6 +82,16 @@ class _LoginScreenState extends ConsumerState<LoginScreen> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Sign In'),
+        actions: [
+          IconButton(
+            tooltip: 'Server Settings',
+            icon: const Icon(Icons.dns_rounded),
+            onPressed: () {
+              final apiClient = ref.read(authServiceProvider).apiClient;
+              ServerConfigDialog.show(context, apiClient);
+            },
+          ),
+        ],
       ),
       body: SafeArea(
         child: SingleChildScrollView(

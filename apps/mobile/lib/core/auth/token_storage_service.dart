@@ -52,6 +52,20 @@ class TokenStorageService {
     }
   }
 
+  static const _customBaseUrlKey = 'antigravite_custom_base_url';
+
+  Future<void> saveCustomBaseUrl(String url) async {
+    await _storage.write(key: _customBaseUrlKey, value: url);
+  }
+
+  Future<String?> getCustomBaseUrl() async {
+    return await _storage.read(key: _customBaseUrlKey);
+  }
+
+  Future<void> clearCustomBaseUrl() async {
+    await _storage.delete(key: _customBaseUrlKey);
+  }
+
   Future<void> clearAll() async {
     await _storage.delete(key: _accessTokenKey);
     await _storage.delete(key: _refreshTokenKey);
